@@ -129,65 +129,77 @@ text(s, 0.86, 7.0, 11.2, 0.35,
 s = slide()
 header(s, "1", "電気をつくる川上から、計算する半導体の川下まで。", "AIインフラのバリューチェーン（価値の流れ）")
 
+#  no, 段階名, 一言, tag, 数値, 出典, [代表企業], desc
 flow = [
-    ("01", "発電・電源", "電気をつくる", "B", "受注残 5兆円超", "三菱重工", ["三菱重工", "IHI", "ヤンマー"]),
-    ("02", "送変電・電線", "電気を送る・変える", "AB", "変圧器 生産能力2倍", "ダイヘン・東芝ES", ["日立", "三菱電機", "フジクラ"]),
-    ("03", "DC建設・設備工事", "箱を建てる", "B", "空調工事 受注+25.5%", "ダイダン", ["鹿島・大林", "きんでん", "高砂熱学"]),
-    ("04", "冷却・電源保護", "冷やす・止めない", "B", "北米DC冷却 約13倍", "ダイキン", ["ダイキン", "GSユアサ", "オイレス"]),
-    ("05", "半導体", "計算する頭脳", "AB", "設備投資 +66%", "キオクシア", ["東京ｴﾚｸﾄﾛﾝ", "ディスコ", "信越化学"]),
+    ("01", "発電・電源", "電気をつくる", "B", "受注残 5兆円超", "三菱重工",
+     "三菱重工・IHI・川崎重工・ヤンマー・デンヨー", "電力が全ての起点。ガスタービンや非常用発電機の需要が急増。"),
+    ("02", "送変電・電線", "電気を送る・変える", "AB", "変圧器 生産能力2倍", "ダイヘン・東芝ES",
+     "日立・三菱電機・ダイヘン・フジクラ・電力4社", "高電圧で送りDC向けに変換。変圧器は世界的に品薄で受注は数年先まで。"),
+    ("03", "DC建設・設備工事", "箱を建てる", "B", "空調工事 受注 +25.5%", "ダイダン",
+     "鹿島・大林・きんでん・関電工・高砂熱学", "巨大な建屋を建設。電気・空調のサブコンが主役で、営業の本命。"),
+    ("04", "冷却・電源保護", "冷やす・止めない", "B", "北米DC冷却 約13倍", "ダイキン",
+     "ダイキン・GSユアサ・オイレス・エア・ウォーター", "液冷で冷やし、UPSで止めない。据付・保守が伴う機器の宝庫。"),
+    ("05", "半導体", "計算する頭脳", "AB", "設備投資 +66%", "キオクシア",
+     "東京エレクトロン・ディスコ・信越化学・キオクシア", "AIチップ本体は海外勢が強いが、装置・材料で日本が世界的シェア。"),
 ]
-# start cap（起点）
-fy, fh = 1.75, 1.05
-rect(s, 0.85, fy, 1.15, fh, fill=CHAR, radius=0.08)
-text(s, 0.85, fy, 1.15, fh, [[R("起点", 9, RGBColor(0xD7,0xDB,0xE0), True, FONT_M)],
-     [R("AI需要", 12.5, WHITE, True)], [R("の拡大", 10, WHITE, True)]],
-     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=1, line_spacing=1.02)
-# end cap（価値実現）
-rect(s, 10.55, fy, 1.93, fh, fill=INK, radius=0.06)
-text(s, 10.55, fy, 1.93, fh, [[R("価値実現", 9, RGBColor(0xC7,0xCF,0xDB), True, FONT_M)],
-     [R("AIサービス稼働", 12, WHITE, True)]],
-     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=1, line_spacing=1.05)
 
-col0, cw = 2.1, 1.64
-by, bh = 3.05, 3.25
-for i, (no, nm, sb, tag, sv, ss, chips) in enumerate(flow):
+fy, fh = 1.5, 0.98         # chevron band
+by, bh = 2.66, 3.84        # body cards
+col0 = 2.02
+cw = (10.62 - col0) / 5    # 5 columns
+
+# start cap（起点）
+rect(s, 0.85, fy, 1.02, fh, fill=CHAR, radius=0.09)
+text(s, 0.85, fy, 1.02, fh,
+     [[R("起点", 8, RGBColor(0xD7,0xDB,0xE0), True, FONT_M, 1)],
+      [R("AI需要", 12, WHITE, True)], [R("の拡大", 9.5, WHITE, True)]],
+     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=0, line_spacing=1.0)
+# end cap（価値実現）
+rect(s, 10.66, fy, 1.82, fh, fill=INK, radius=0.06)
+text(s, 10.66, fy, 1.82, fh,
+     [[R("価値実現", 8, RGBColor(0xC7,0xCF,0xDB), True, FONT_M, 1)],
+      [R("AIサービス", 12.5, WHITE, True)], [R("稼働", 10, WHITE, True)]],
+     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=0, line_spacing=1.0)
+
+for i, (no, nm, sb, tag, sv, ss, chips, desc) in enumerate(flow):
     cx = col0 + i * cw
-    # chevron header（矢羽根）
-    ch = s.shapes.add_shape(MSO_SHAPE.CHEVRON, Inches(cx-0.10), Inches(fy), Inches(cw+0.20), Inches(fh))
+    # chevron（矢羽根、テキストは別ボックスで重ねて改行崩れを防ぐ）
+    ch = s.shapes.add_shape(MSO_SHAPE.CHEVRON, Inches(cx-0.02), Inches(fy), Inches(cw+0.16), Inches(fh))
     ch.shadow.inherit = False
     ch.fill.solid(); ch.fill.fore_color.rgb = RED; ch.line.fill.background()
-    tf = ch.text_frame; tf.word_wrap = True
-    tf.margin_left = Inches(0.12); tf.margin_right = Inches(0.18)
-    tf.margin_top = 0; tf.margin_bottom = 0; tf.vertical_anchor = MSO_ANCHOR.MIDDLE
-    p = tf.paragraphs[0]; p.alignment = PP_ALIGN.CENTER; p.line_spacing = 1.0
-    r = p.add_run(); r.text = no + "  "; r.font.size = Pt(9); r.font.bold = True; r.font.color.rgb = RGBColor(0xFF,0xC9,0xCE); r.font.name = FONT_M
-    r = p.add_run(); r.text = nm; r.font.size = Pt(11.5); r.font.bold = True; r.font.color.rgb = WHITE; r.font.name = FONT
-    p2 = tf.add_paragraph(); p2.alignment = PP_ALIGN.CENTER; p2.space_before = Pt(1)
-    r = p2.add_run(); r.text = sb; r.font.size = Pt(8.5); r.font.color.rgb = RGBColor(0xFF,0xE2,0xE5); r.font.name = FONT
-    # body card
-    bx = cx + 0.02; bw = cw - 0.12
-    rect(s, bx, by, bw, bh, fill=WHITE, line=LINE, line_w=1, radius=0.05)
-    tagtxt = {"A": "A 発注者", "B": "B 請負", "AB": "A＋B"}[tag]
-    tagcol = CHAR if tag == "A" else RED
-    text(s, bx+0.12, by+0.12, bw-0.24, 0.3, [[R(tagtxt, 8.5, tagcol, True, FONT_M)]])
-    # stat highlight
-    text(s, bx+0.12, by+0.5, bw-0.24, 0.7,
-         [[R(sv, 11, RED, True)], [R(ss, 7.5, MUTE, False, FONT_M)]], space_after=1, line_spacing=1.05)
-    rect(s, bx+0.12, by+1.28, bw-0.24, 0.012, fill=LINE)
-    # companies
-    runs = [[R("代表企業", 7.5, MUTE, True, FONT_M)]]
-    for c in chips:
-        runs.append([R(c, 9.5, INK, True)])
-    text(s, bx+0.12, by+1.4, bw-0.24, bh-1.5, runs, space_after=3, line_spacing=1.05)
+    ch.text_frame.text = ""
+    text(s, cx-0.06, fy, cw+0.10, fh,
+         [[R(no, 8, RGBColor(0xFF,0xC9,0xCE), True, FONT_M, 1)],
+          [R(nm, 11, WHITE, True)]],
+         align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=0, line_spacing=1.0)
 
-# legend + note
-rect(s, 0.85, 6.5, 11.63, 0.62, fill=PANEL, line=LINE, line_w=1, radius=0.05)
-text(s, 1.1, 6.5, 11.2, 0.62,
+    # body card
+    bx = cx + 0.05; bw = cw - 0.10
+    rect(s, bx, by, bw, bh, fill=WHITE, line=LINE, line_w=1, radius=0.045)
+    tagtxt = {"A": "A 発注者", "B": "B 請負", "AB": "A＋B 両取り"}[tag]
+    tagcol = CHAR if tag == "A" else RED
+    pad = 0.14
+    # tag + 一言
+    text(s, bx+pad, by+0.14, bw-2*pad, 0.24, [[R(tagtxt, 8.5, tagcol, True, FONT_M)]])
+    text(s, bx+pad, by+0.42, bw-2*pad, 0.3, [[R(sb, 11.5, INK, True)]])
+    # desc
+    text(s, bx+pad, by+0.82, bw-2*pad, 1.0, [[R(desc, 8.8, BODY)]], line_spacing=1.16)
+    # stat block
+    rect(s, bx+pad, by+1.86, bw-2*pad, 0.01, fill=REDBD)
+    text(s, bx+pad, by+1.96, bw-2*pad, 0.66,
+         [[R(sv, 12, RED, True)], [R(ss, 7.5, MUTE, False, FONT_M)]], space_after=0, line_spacing=1.06)
+    # companies
+    text(s, bx+pad, by+2.72, bw-2*pad, 0.22, [[R("代表企業（国内）", 7.5, MUTE, True, FONT_M)]])
+    text(s, bx+pad, by+2.96, bw-2*pad, 0.82, [[R(chips, 9, INK, True)]], line_spacing=1.22)
+
+# legend
+rect(s, 0.85, 6.66, 11.63, 0.56, fill=PANEL, line=LINE, line_w=1, radius=0.06)
+text(s, 1.1, 6.66, 11.2, 0.56,
      [[R("現場管理の入り方：", 10, MUTE, True, FONT_M),
        R(" A 発注者＝自社の設備投資を建てる側で管理", 10.5, CHAR, True),
-       R("　／　", 10.5, MUTE, False),
+       R("　／　", 10, MUTE, False),
        R("B 請負＝据付・試運転・保守を納める側で管理", 10.5, RED, True),
-       R("　（各段階は代表企業のみ表示）", 9.5, MUTE, False)]],
+       R("　※各段階は代表企業のみ表示", 9, MUTE, False)]],
      anchor=MSO_ANCHOR.MIDDLE)
 
 # =========================================================
