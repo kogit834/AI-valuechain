@@ -1,0 +1,342 @@
+<style>
+  :root{
+    --bg:#E7EBF0; --grid:#D9DFE7;
+    --surface:#FBFCFE; --surface-2:#F1F4F8; --surface-3:#EAEEF4;
+    --ink:#132038; --ink-soft:#4C5B74; --ink-faint:#7C8AA1;
+    --line:#C7D0DD; --line-soft:#DCE3EC;
+    --owner:#B0602A; --owner-ink:#8F4A1E; --owner-wash:#F1E2D5; --owner-on:#FFFFFF;
+    --vendor:#0F7A83; --vendor-ink:#0B5960; --vendor-wash:#D8EAEC; --vendor-on:#FFFFFF;
+    --shadow:0 1px 2px rgba(19,32,56,.06),0 6px 20px rgba(19,32,56,.07);
+    --shadow-lg:0 2px 6px rgba(19,32,56,.08),0 18px 44px rgba(19,32,56,.11);
+    --mono:ui-monospace,"SFMono-Regular","SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+    --jp:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","YuGothic","Noto Sans JP","Meiryo",sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0B1322; --grid:#141F33;
+      --surface:#111D33; --surface-2:#0E1829; --surface-3:#0C1626;
+      --ink:#E7EEF7; --ink-soft:#9DAEC6; --ink-faint:#6C7E99;
+      --line:#28374F; --line-soft:#1D2A3F;
+      --owner:#D98A54; --owner-ink:#E5A272; --owner-wash:#2A1E14; --owner-on:#1B1006;
+      --vendor:#4EB4BD; --vendor-ink:#6BC7CE; --vendor-wash:#0E2427; --vendor-on:#04191B;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.34);
+      --shadow-lg:0 2px 8px rgba(0,0,0,.36),0 22px 50px rgba(0,0,0,.46);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#E7EBF0; --grid:#D9DFE7; --surface:#FBFCFE; --surface-2:#F1F4F8; --surface-3:#EAEEF4;
+    --ink:#132038; --ink-soft:#4C5B74; --ink-faint:#7C8AA1; --line:#C7D0DD; --line-soft:#DCE3EC;
+    --owner:#B0602A; --owner-ink:#8F4A1E; --owner-wash:#F1E2D5; --owner-on:#FFFFFF;
+    --vendor:#0F7A83; --vendor-ink:#0B5960; --vendor-wash:#D8EAEC; --vendor-on:#FFFFFF;
+    --shadow:0 1px 2px rgba(19,32,56,.06),0 6px 20px rgba(19,32,56,.07);
+    --shadow-lg:0 2px 6px rgba(19,32,56,.08),0 18px 44px rgba(19,32,56,.11);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0B1322; --grid:#141F33; --surface:#111D33; --surface-2:#0E1829; --surface-3:#0C1626;
+    --ink:#E7EEF7; --ink-soft:#9DAEC6; --ink-faint:#6C7E99; --line:#28374F; --line-soft:#1D2A3F;
+    --owner:#D98A54; --owner-ink:#E5A272; --owner-wash:#2A1E14; --owner-on:#1B1006;
+    --vendor:#4EB4BD; --vendor-ink:#6BC7CE; --vendor-wash:#0E2427; --vendor-on:#04191B;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.34);
+    --shadow-lg:0 2px 8px rgba(0,0,0,.36),0 22px 50px rgba(0,0,0,.46);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; font-family:var(--jp); color:var(--ink); background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:28px 28px; line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1060px;margin:0 auto;padding:clamp(20px,4vw,52px) clamp(16px,4vw,34px) 80px}
+  .eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--owner-ink);margin:0 0 14px}
+  .sec-label{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:.74rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 20px}
+  .sec-label::before{content:"";font-family:var(--mono)}
+  .sec-label b{color:var(--owner-ink);font-weight:700}
+
+  /* animate in */
+  .rise{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.rise{animation:none;opacity:1;transform:none}}
+
+  /* HERO */
+  header{padding:14px 0 8px}
+  h1{font-size:clamp(1.9rem,5.2vw,3.15rem);line-height:1.16;letter-spacing:-.015em;margin:0 0 .5em;text-wrap:balance;font-weight:800}
+  h1 .u{color:var(--owner-ink)}
+  h1 .v{color:var(--vendor-ink)}
+  .dek{font-size:clamp(1rem,2.4vw,1.2rem);color:var(--ink-soft);max-width:62ch;margin:0}
+  .meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px;font-family:var(--mono);font-size:.72rem;color:var(--ink-faint)}
+  .meta span{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:5px 10px}
+
+  hr.rule{height:1px;background:var(--line);border:0;margin:44px 0}
+
+  /* MACRO logic */
+  .macro{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  .macro .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 20px;box-shadow:var(--shadow);position:relative}
+  .macro .card .n{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--ink-faint)}
+  .macro .card h3{margin:.4em 0 .35em;font-size:1.06rem;font-weight:800;line-height:1.35}
+  .macro .card p{margin:0;font-size:.88rem;color:var(--ink-soft)}
+  .macro .card:not(:last-child)::after{content:"→";position:absolute;right:-13px;top:50%;transform:translateY(-50%);z-index:2;font-family:var(--mono);font-weight:700;color:var(--owner);font-size:1.3rem}
+  @media(max-width:760px){.macro{grid-template-columns:1fr}.macro .card:not(:last-child)::after{right:50%;top:auto;bottom:-15px;transform:translateX(50%) rotate(90deg)}}
+
+  /* TWO MODELS frame */
+  .models{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .model{border-radius:18px;padding:24px 24px 26px;box-shadow:var(--shadow-lg);border:1px solid var(--line);position:relative;overflow:hidden}
+  .model--owner{background:linear-gradient(180deg,var(--owner-wash),var(--surface) 62%)}
+  .model--vendor{background:linear-gradient(180deg,var(--vendor-wash),var(--surface) 62%)}
+  .model .tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:6px 12px;border-radius:999px;color:#fff}
+  .model--owner .tag{background:var(--owner);color:var(--owner-on)}
+  .model--vendor .tag{background:var(--vendor);color:var(--vendor-on)}
+  .model h3{margin:.7em 0 .3em;font-size:1.32rem;font-weight:800;letter-spacing:-.01em;line-height:1.3}
+  .model .role{font-family:var(--mono);font-size:.76rem;color:var(--ink-faint);margin:0 0 .9em}
+  .model p{margin:0;font-size:.95rem;color:var(--ink-soft)}
+  .model ul{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+  .model li{display:flex;gap:10px;font-size:.9rem;align-items:flex-start}
+  .model li::before{content:"";width:8px;height:8px;border-radius:2px;margin-top:.5em;flex:none}
+  .model--owner li::before{background:var(--owner)}
+  .model--vendor li::before{background:var(--vendor)}
+  @media(max-width:760px){.models{grid-template-columns:1fr}}
+
+  /* WHY ANDPAD bridge */
+  .bridge{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(20px,3vw,30px);box-shadow:var(--shadow-lg)}
+  .bridge h2{margin:0 0 .2em;font-size:clamp(1.3rem,3vw,1.7rem);font-weight:800;letter-spacing:-.01em;text-wrap:balance}
+  .bridge .sub{margin:0 0 22px;color:var(--ink-soft);font-size:.98rem}
+  .flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;align-items:stretch}
+  .flow .f{padding:6px 18px;position:relative}
+  .flow .f:not(:first-child){border-left:1px solid var(--line-soft)}
+  .flow .f .fn{font-family:var(--mono);font-size:1.55rem;font-weight:700;color:var(--owner-ink);line-height:1}
+  .flow .f h4{margin:.5em 0 .3em;font-size:1rem;font-weight:800}
+  .flow .f p{margin:0;font-size:.86rem;color:var(--ink-soft)}
+  .flow .f:last-child .fn{color:var(--vendor-ink)}
+  @media(max-width:760px){.flow{grid-template-columns:1fr}.flow .f:not(:first-child){border-left:0;border-top:1px solid var(--line-soft)}.flow .f{padding:16px 4px}}
+
+  /* AREA opportunity map */
+  .area{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:22px clamp(18px,2.6vw,26px) 24px;margin-bottom:16px}
+  .area__top{display:flex;gap:16px;align-items:baseline;flex-wrap:wrap;margin-bottom:4px}
+  .area__no{font-family:var(--mono);font-weight:700;font-size:1.05rem;color:var(--owner-ink);flex:none}
+  .area__name{font-size:clamp(1.2rem,2.8vw,1.5rem);font-weight:800;letter-spacing:-.01em;line-height:1.25;margin:0}
+  .area__who{font-family:var(--mono);font-size:.72rem;color:var(--ink-faint);letter-spacing:.04em}
+  .area__now{display:flex;gap:11px;margin:12px 0 16px;font-size:.92rem;color:var(--ink-soft);padding:11px 14px;background:var(--surface-2);border-radius:10px;border:1px solid var(--line-soft)}
+  .area__now .nlab{font-family:var(--mono);font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);flex:none;padding-top:.2em}
+  .players{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+  .pl{display:inline-flex;align-items:center;gap:7px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:5px 9px;font-size:.8rem;font-weight:700}
+  .pl .tk{font-family:var(--mono);font-size:.68rem;color:var(--ink-faint);font-weight:400}
+  .pl .tk.priv{color:var(--owner-ink)}
+
+  .ops{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .op{border-radius:13px;padding:16px 16px 17px;border:1px solid var(--line)}
+  .op--owner{background:var(--owner-wash)}
+  .op--vendor{background:var(--vendor-wash)}
+  .op__hd{display:flex;align-items:center;gap:9px;margin-bottom:9px;flex-wrap:wrap}
+  .op__badge{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:4px 9px;border-radius:999px;color:#fff}
+  .op--owner .op__badge{background:var(--owner);color:var(--owner-on)}
+  .op--vendor .op__badge{background:var(--vendor);color:var(--vendor-on)}
+  .op__fit{margin-left:auto;font-family:var(--mono);font-size:.72rem;font-weight:700;display:inline-flex;align-items:center;gap:5px}
+  .op--owner .op__fit{color:var(--owner-ink)}
+  .op--vendor .op__fit{color:var(--vendor-ink)}
+  .op h4{margin:0 0 .35em;font-size:.98rem;font-weight:800;line-height:1.4}
+  .op p{margin:0;font-size:.85rem;color:var(--ink-soft)}
+  @media(max-width:640px){.ops{grid-template-columns:1fr}}
+
+  /* PRIORITY matrix */
+  .matrix-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:560px}
+  thead th{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;text-align:left;padding:14px 16px;border-bottom:1px solid var(--line)}
+  thead th.c-owner{color:var(--owner-ink)}
+  thead th.c-vendor{color:var(--vendor-ink)}
+  tbody td{padding:13px 16px;border-bottom:1px solid var(--line-soft);font-size:.88rem;vertical-align:top}
+  tbody tr:last-child td{border-bottom:0}
+  td.area-cell{font-weight:700;white-space:nowrap}
+  td.area-cell small{display:block;font-weight:400;color:var(--ink-faint);font-family:var(--mono);font-size:.68rem}
+  .fit{font-family:var(--mono);font-weight:700;font-size:1rem}
+  .fit.best{color:var(--vendor-ink)}
+  .fit.good{color:var(--ink)}
+  .fit.mid{color:var(--ink-faint)}
+  .fit small{display:block;font-family:var(--jp);font-weight:400;font-size:.76rem;color:var(--ink-soft);margin-top:2px;max-width:34ch}
+
+  /* takeaways */
+  .take{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .take .t{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 20px;box-shadow:var(--shadow);border-top:3px solid var(--owner)}
+  .take .t:nth-child(2){border-top-color:var(--vendor)}
+  .take .t:nth-child(3){border-top-color:var(--owner)}
+  .take .t .k{font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint)}
+  .take .t h4{margin:.45em 0 .4em;font-size:1.04rem;font-weight:800;line-height:1.35}
+  .take .t p{margin:0;font-size:.87rem;color:var(--ink-soft)}
+  @media(max-width:760px){.take{grid-template-columns:1fr}}
+
+  footer{margin-top:40px;color:var(--ink-faint);font-size:.82rem;line-height:1.75;border-top:1px solid var(--line);padding-top:22px}
+  footer b{color:var(--ink-soft)}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:14px}
+  .legend .lg{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;color:var(--ink-soft)}
+  .legend .sw{width:22px;height:12px;border-radius:4px;flex:none}
+  .legend .sw.o{background:var(--owner)} .legend .sw.v{background:var(--vendor)}
+  h2.h{font-size:clamp(1.5rem,3.4vw,2.05rem);font-weight:800;letter-spacing:-.015em;margin:0 0 .4em;text-wrap:balance}
+  .lede{color:var(--ink-soft);max-width:64ch;margin:0 0 26px;font-size:1rem}
+</style>
+
+<div class="wrap">
+
+  <header class="rise">
+    <p class="eyebrow">ANDPAD 製造業事業部 · Opportunity Story</p>
+    <h1>AI需要の拡大が生む、<br><span class="u">発注者</span>と<span class="v">請負</span>、<br>ふたつの現場管理オポチュニティ。</h1>
+    <p class="dek">生成AIの普及はデータセンター建設ラッシュを呼び、電力・重電・冷却・半導体まで、製造業のあらゆる領域で「設備投資」と「据付・試運転・保守の現場」が同時に急増しています。それは、ANDPADが製造業に入り込む商機そのもの。バリューチェーンに沿って、どの領域でどんなテーマが生まれるかを整理しました。</p>
+    <div class="meta"><span>対象：製造業事業部</span><span>軸：発注者活用 × 請負活用</span><span>領域：AIインフラ・バリューチェーン5領域</span></div>
+  </header>
+
+  <hr class="rule">
+
+  <!-- MACRO -->
+  <p class="sec-label"><b>01</b> なぜ、いま製造業に追い風なのか</p>
+  <div class="macro">
+    <div class="card rise"><div class="n">きっかけ</div><h3>AIは“電気と設備の塊”</h3><p>生成AIの計算にはデータセンター1棟で数万世帯分の電力。膨大な電源・冷却・建屋・半導体が要る。</p></div>
+    <div class="card rise"><div class="n">連鎖</div><h3>製造業に投資と案件が波及</h3><p>重電・電線・空調・UPS・半導体装置——各社が工場を増設し、機器の納入・据付案件が全国で立ち上がる。</p></div>
+    <div class="card rise"><div class="n">結果</div><h3>現場が一気に増える</h3><p>設備投資プロジェクトも、据付・試運転・アフター保守の現場も急増。管理すべき「現場」が膨れ上がる。</p></div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- TWO MODELS -->
+  <p class="sec-label"><b>02</b> ANDPADが刺さる、ふたつの活用モデル</p>
+  <div class="models">
+    <div class="model model--owner rise">
+      <span class="tag">Model A ・ 発注者</span>
+      <h3>自社の設備投資を、発注者として管理する</h3>
+      <p class="role">製造業ユーザーが「建てる側・持つ側」として</p>
+      <p>工場の新設・増産、生産ラインの更新、自社データセンターや電源・冷却設備の導入——増える設備投資プロジェクトの工程・品質・安全・協力会社を一元管理する。</p>
+      <ul>
+        <li>工場・生産能力増強プロジェクトの進捗と品質の見える化</li>
+        <li>多数の協力会社・工事業者の情報を一本化</li>
+        <li>竣工後の設備保全・点検記録へそのまま接続</li>
+      </ul>
+    </div>
+    <div class="model model--vendor rise">
+      <span class="tag">Model B ・ 請負</span>
+      <h3>据付・試運転・アフターの現場を、請負側で管理する</h3>
+      <p class="role">機械・設備の製造業が「納めて・据えて・保守する側」として</p>
+      <p>発電機・変圧器・空調・液冷・UPS・半導体装置などを納入する製造業が、設置・試運転・立ち上げ・定期保守のフィールド現場を管理し、報告と是正をデジタル化する。</p>
+      <ul>
+        <li>全国に散る据付・試運転現場の進捗と写真報告を集約</li>
+        <li>試運転チェック・引き渡し・不具合是正の記録を標準化</li>
+        <li>アフターサービス（定期点検・更新）の現場情報を蓄積</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- WHY ANDPAD bridge -->
+  <p class="sec-label"><b>03</b> この局面で、なぜ「現場管理SaaS」なのか</p>
+  <div class="bridge rise">
+    <h2>案件は急増、人手は増えない。そのギャップを埋める。</h2>
+    <p class="sub">AI起点の需要増は、現場の“数”を一気に押し上げます。従来の紙・Excel・電話・メールでは、増えた現場をさばききれません。</p>
+    <div class="flow">
+      <div class="f"><div class="fn">01</div><h4>現場が急増する</h4><p>設備投資と据付・保守案件が同時多発。1人あたりの担当現場が膨らむ。</p></div>
+      <div class="f"><div class="fn">02</div><h4>従来手法が限界に</h4><p>写真・報告・チェックが属人化・分散し、品質と進捗が見えない。</p></div>
+      <div class="f"><div class="fn">03</div><h4>ANDPADで一元化</h4><p>据付・試運転・保守・工事の情報を集約し、報告と是正を標準化する。</p></div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- AREA MAP -->
+  <p class="sec-label"><b>04</b> 領域 × オポチュニティ・マップ</p>
+  <h2 class="h">5つの領域で、テーマはこう生まれる。</h2>
+  <p class="lede">バリューチェーンの各領域について「いま起きていること」と、そこから生まれる<span style="color:var(--owner-ink);font-weight:700">発注者活用（A）</span>・<span style="color:var(--vendor-ink);font-weight:700">請負活用（B）</span>のテーマを対で示します。<span style="font-family:var(--mono);font-size:.85em">◎＝相性が特に高い</span>。</p>
+  <div id="areas"></div>
+
+  <hr class="rule">
+
+  <!-- PRIORITY -->
+  <p class="sec-label"><b>05</b> どこから攻めるか — 相性マトリクス</p>
+  <div class="matrix-wrap rise">
+    <table>
+      <thead>
+        <tr>
+          <th>領域</th>
+          <th class="c-owner">Model A ・ 発注者活用</th>
+          <th class="c-vendor">Model B ・ 請負・アフター活用</th>
+        </tr>
+      </thead>
+      <tbody id="matrix"></tbody>
+    </table>
+  </div>
+
+  <hr class="rule">
+
+  <!-- TAKEAWAYS -->
+  <p class="sec-label"><b>06</b> 営業ストーリーの結論</p>
+  <div class="take">
+    <div class="t rise"><div class="k">最有力の入口</div><h4>据付・保守は「請負×フィールド」で刺す</h4><p>冷却・UPS・半導体装置など、据付/試運転/アフターが命の機器メーカーが最有力。Model Bの本命。</p></div>
+    <div class="t rise"><div class="k">大型の伸びしろ</div><h4>工場増設ラッシュは「発注者」で刺す</h4><p>変圧器・半導体の増産投資が桁違い。建てる側のプロジェクト管理としてModel Aで攻める。</p></div>
+    <div class="t rise"><div class="k">横展開の型</div><h4>建設接点から機器メーカーへ広げる</h4><p>DC建設の設備工事はANDPADの中核。そこに機器を納める製造業へ、請負活用を横展開する。</p></div>
+  </div>
+
+  <footer>
+    <div class="legend">
+      <span class="lg"><span class="sw o"></span>Model A ・ 発注者活用（自社の設備投資を管理）</span>
+      <span class="lg"><span class="sw v"></span>Model B ・ 請負・アフター活用（据付・試運転・保守を管理）</span>
+    </div>
+    <p><b>この資料について</b>　AI需要拡大に伴う増収増益領域の調査（国内・海外あわせて128社）をもとに、ANDPAD製造業事業部向けの機会仮説として再構成したものです。企業は各社の決算・IR等の一次情報にもとづき選定。証券コード（例：<span style="font-family:var(--mono)">7011</span>）を併記しています。詳細な根拠・出典は企業マスタ（<span style="font-family:var(--mono)">valuechain_master.xlsx</span>）と調査メモ（<span style="font-family:var(--mono)">research/</span>）を参照。<span style="font-family:var(--mono);font-size:.9em">作成 2026-07 ／ 営業仮説・要検証</span></p>
+  </footer>
+
+</div>
+
+<script>
+  const AREAS=[
+    {no:"01",name:"発電・電源設備",who:"重工・エンジン・発電機メーカー",
+     now:"データセンター向け非常用発電機・ガスタービンの受注が過去最高。メーカーは生産能力の倍増投資に動く。",
+     players:[{nm:"三菱重工業",tk:"7011"},{nm:"IHI",tk:"7013"},{nm:"ヤンマーHD",tk:"非上場",priv:1},{nm:"デンヨー",tk:"6517"}],
+     a:{fit:"○",head:"生産能力2倍へ——発電機・重工メーカーの工場新増設",body:"メーカー自身が国内外で新工場を建設。発注者として、工場建設や生産ライン増設の工程・品質・安全を管理する機会。"},
+     b:{fit:"◎",head:"DC向け非常用電源の設置・試運転・定期点検が急増",body:"納入した発電機・電源設備の据付／試運転／アフター保守の現場が全国で立ち上がる。点検・報告・是正の一元化。"}},
+    {no:"02",name:"受変電・送配電・電線",who:"変圧器・開閉装置・電線メーカー／電力会社",
+     now:"変圧器が世界的に品薄で受注は数年先まで。各社が国内外で工場を増産し、電力会社も変電所・系統増強へ投資。",
+     players:[{nm:"日立製作所",tk:"6501"},{nm:"三菱電機",tk:"6503"},{nm:"東芝エネルギーシステムズ",tk:"非上場",priv:1},{nm:"ダイヘン",tk:"6622"},{nm:"古河電気工業",tk:"5801"},{nm:"九州電力",tk:"9508"}],
+     a:{fit:"◎",head:"変圧器工場の増産ラッシュ・電力会社の変電所建設",body:"日立・ダイヘン・東芝などの新工場/増築、電力会社の変電所・送配電投資。建てる側の大型設備投資プロジェクト管理。"},
+     b:{fit:"◎",head:"変圧器・GIS・開閉装置の据付・更新工事・保守",body:"重電機器の現地据付／試運転／設備更新／保守、電線敷設。機器メーカー・工事会社のフィールド現場を管理。"}},
+    {no:"03",name:"データセンター建設・設備工事",who:"ゼネコン／電気・空調サブコン",
+     now:"DC建設ラッシュでゼネコン・設備工事会社の受注が過去最高。ANDPADが最も強い建設領域そのもの。",
+     players:[{nm:"高砂熱学工業",tk:"1969"},{nm:"きんでん",tk:"1944"},{nm:"関電工",tk:"1942"},{nm:"ダイダン",tk:"1980"},{nm:"新日本空調",tk:"1952"}],
+     a:{fit:"○",head:"自社工場・データセンターを建てる事業者の建設管理",body:"製造業ユーザーが自社の生産拠点やDCを新設するケース。発注者としての建設プロジェクト管理。"},
+     b:{fit:"◎",head:"受変電盤・空調機・冷却機を納める製造業の据付接点",body:"建設現場に機器を納入し据付・試運転で入る製造業。建設事業部の強みを、機器メーカーへ横展開する結節点。"}},
+    {no:"04",name:"冷却・電源保護設備",who:"空調・液冷・UPS・免震メーカー",
+     now:"高発熱のAIサーバで液冷需要が爆発。UPS・非常用電源・免震も同時に拡大。据付・試運転・保守が伴う機器の宝庫。",
+     players:[{nm:"ダイキン工業",tk:"6367"},{nm:"ジーエス・ユアサ",tk:"6674"},{nm:"エア・ウォーター",tk:"4088"},{nm:"三菱重工サーマル",tk:"非上場",priv:1},{nm:"オイレス工業",tk:"6282"}],
+     a:{fit:"○",head:"冷却・空調メーカーの増産投資",body:"ダイキン等がDC向け冷却事業を数倍に拡大し生産体制を増強。発注者としての工場投資管理。"},
+     b:{fit:"◎",head:"液冷・チラー・UPS・免震装置の据付・試運転・アフター",body:"まさに機械製造業のフィールドサービスそのもの。設置→試運転→定期保守の現場管理と相性が最も高い最有力領域。"}},
+    {no:"05",name:"半導体（工場・製造装置・材料）",who:"メモリ・製造装置・材料メーカー",
+     now:"AI半導体の巨額ファブ投資。チップ本体は台湾・韓国が強いが、日本は製造装置・材料で世界的シェアを握る。",
+     players:[{nm:"東京エレクトロン",tk:"8035"},{nm:"ディスコ",tk:"6146"},{nm:"SUMCO",tk:"3436"},{nm:"信越化学工業",tk:"4063"},{nm:"キオクシアHD",tk:"285A"}],
+     a:{fit:"◎",head:"巨大ファブ・クリーンルームの新設",body:"半導体・装置・材料メーカーが桁違いの工場投資。発注者としての大型建設・設備投資プロジェクト管理。"},
+     b:{fit:"◎",head:"半導体製造装置の据付・立ち上げ・フィールドサービス",body:"装置は設置・調整・保守が命。装置メーカーのインストール／試運転／定期メンテのサービス現場を管理。"}}
+  ];
+
+  const MATRIX=[
+    {no:"01",name:"発電・電源設備",a:{r:"○",cls:"good",note:"メーカーの工場増設"},b:{r:"◎",cls:"best",note:"非常用電源の設置・試運転・保守が急増"}},
+    {no:"02",name:"受変電・送配電・電線",a:{r:"◎",cls:"good",note:"変圧器工場の増産ラッシュ・変電所建設"},b:{r:"◎",cls:"best",note:"機器の据付・更新工事・保守"}},
+    {no:"03",name:"DC建設・設備工事",a:{r:"○",cls:"mid",note:"自社拠点を建てる事業者"},b:{r:"◎",cls:"best",note:"機器を納める製造業への横展開接点"}},
+    {no:"04",name:"冷却・電源保護",a:{r:"○",cls:"good",note:"空調メーカーの増産投資"},b:{r:"◎",cls:"best",note:"最有力：フィールドサービスそのもの"}},
+    {no:"05",name:"半導体",a:{r:"◎",cls:"good",note:"巨大ファブ・クリーンルーム新設"},b:{r:"◎",cls:"best",note:"製造装置の据付・立ち上げ・保守"}}
+  ];
+
+  const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+  const pl=p=>`<span class="pl">${esc(p.nm)}<span class="tk${p.priv?' priv':''}">${esc(p.tk)}</span></span>`;
+  const op=(o,kind)=>`<div class="op op--${kind}">
+      <div class="op__hd"><span class="op__badge">${kind==='owner'?'A 発注者':'B 請負'}</span><span class="op__fit">相性 ${esc(o.fit)}</span></div>
+      <h4>${esc(o.head)}</h4><p>${esc(o.body)}</p></div>`;
+  const area=x=>`<section class="area rise">
+     <div class="area__top"><span class="area__no">領域 ${esc(x.no)}</span><h3 class="area__name">${esc(x.name)}</h3><span class="area__who">${esc(x.who)}</span></div>
+     <div class="area__now"><span class="nlab">いま</span><span>${esc(x.now)}</span></div>
+     <div class="players">${x.players.map(pl).join("")}</div>
+     <div class="ops">${op(x.a,'owner')}${op(x.b,'vendor')}</div>
+   </section>`;
+  document.getElementById("areas").innerHTML=AREAS.map(area).join("");
+
+  const row=m=>`<tr>
+     <td class="area-cell">${esc(m.name)}<small>領域 ${esc(m.no)}</small></td>
+     <td><span class="fit ${m.a.cls}">${esc(m.a.r)}<small>${esc(m.a.note)}</small></span></td>
+     <td><span class="fit ${m.b.cls}">${esc(m.b.r)}<small>${esc(m.b.note)}</small></span></td>
+   </tr>`;
+  document.getElementById("matrix").innerHTML=MATRIX.map(row).join("");
+
+  // stagger the rise animation
+  document.querySelectorAll(".rise").forEach((el,i)=>{el.style.animationDelay=(Math.min(i,10)*60)+"ms";});
+</script>
