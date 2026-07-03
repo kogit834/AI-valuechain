@@ -67,6 +67,9 @@
   .role--a{background:var(--charwa);color:var(--char);border:1px solid var(--line)}
   .role--ab{background:linear-gradient(90deg,var(--charwa) 50%,var(--redwa) 50%);color:var(--ink);border:1px solid var(--line)}
   .desc{font-size:.8rem;color:var(--body);margin:0}
+  .stat{border-top:1px dashed var(--redbd);padding-top:8px}
+  .stat__v{font-size:.92rem;font-weight:800;color:var(--red-dk);line-height:1.25;font-variant-numeric:tabular-nums}
+  .stat__s{display:block;font-family:var(--mono);font-size:.62rem;color:var(--mute);margin-top:1px}
   .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto}
   .chip{font-size:.74rem;font-weight:700;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:3px 7px;line-height:1.3}
   .more{font-size:.68rem;color:var(--mute);align-self:center}
@@ -126,18 +129,23 @@
   const STAGES=[
     {no:"01",nm:"発電・電源",sb:"電気をつくる",tag:"B",role:"B 据付・保守",
      desc:"AIの計算に不可欠な電力。ガスタービン・非常用発電機が最上流。",
+     stat:{v:"受注残 5兆円超",s:"三菱重工・ガスタービン"},
      chips:["三菱重工","IHI","ヤンマー","デンヨー"]},
     {no:"02",nm:"送変電・電線",sb:"電気を送る・変える",tag:"AB",role:"A＋B",
      desc:"高電圧で送り、DC向けに変換。変圧器は世界的に品薄で受注は数年先まで。",
+     stat:{v:"変圧器 生産能力 2倍へ",s:"ダイヘン・東芝ES"},
      chips:["日立","三菱電機","ダイヘン","フジクラ","電力4社"]},
     {no:"03",nm:"DC建設・設備工事",sb:"箱を建てる",tag:"B",role:"B 設備工事（本命）",
      desc:"巨大な建屋を建設。元請けゼネコンと電気・空調のサブコンが主役。",
+     stat:{v:"空調工事 受注 +25.5%",s:"ダイダン・中間期"},
      chips:["鹿島","大林組","きんでん","高砂熱学"]},
     {no:"04",nm:"冷却・電源保護",sb:"冷やす・止めない",tag:"B",role:"B 据付〜アフター（最有力）",
      desc:"高発熱サーバを液冷で冷やし、UPS・非常用で止めない。据付・保守の宝庫。",
+     stat:{v:"北米DC冷却 約13倍へ",s:"ダイキン・30年度計画"},
      chips:["ダイキン","GSユアサ","オイレス"]},
     {no:"05",nm:"半導体",sb:"計算する頭脳",tag:"AB",role:"A＋B",
      desc:"AIチップ本体は海外勢が強いが、日本は製造装置・材料で世界的シェア。",
+     stat:{v:"設備投資 +66%",s:"キオクシア・26〜28年度"},
      chips:["東京エレクトロン","ディスコ","キオクシア","信越化学"]},
   ];
 
@@ -150,6 +158,7 @@
       <div class="body">
         <span class="role ${roleCls(s.tag)}">${esc(s.role)}</span>
         <p class="desc">${esc(s.desc)}</p>
+        <div class="stat"><span class="stat__v">${esc(s.stat.v)}</span><span class="stat__s">${esc(s.stat.s)}</span></div>
         <div class="chips">${s.chips.map(chip).join("")}</div>
       </div>
     </div>`;

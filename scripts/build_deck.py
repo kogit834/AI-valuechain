@@ -124,10 +124,77 @@ text(s, 0.86, 7.0, 11.2, 0.35,
      [[R("2026-07  /  出典：AIインフラ・バリューチェーン調査（国内外128社・決算/IR一次情報）", 10.5, MUTE, False, FONT_M)]])
 
 # =========================================================
-# SLIDE 2 — なぜ今
+# SLIDE 2 — バリューチェーン全体像（横フロー）
 # =========================================================
 s = slide()
-header(s, "1", "AI需要の連鎖が、製造業に投資と現場をもたらす。", "なぜ、いま製造業に追い風なのか")
+header(s, "1", "電気をつくる川上から、計算する半導体の川下まで。", "AIインフラのバリューチェーン（価値の流れ）")
+
+flow = [
+    ("01", "発電・電源", "電気をつくる", "B", "受注残 5兆円超", "三菱重工", ["三菱重工", "IHI", "ヤンマー"]),
+    ("02", "送変電・電線", "電気を送る・変える", "AB", "変圧器 生産能力2倍", "ダイヘン・東芝ES", ["日立", "三菱電機", "フジクラ"]),
+    ("03", "DC建設・設備工事", "箱を建てる", "B", "空調工事 受注+25.5%", "ダイダン", ["鹿島・大林", "きんでん", "高砂熱学"]),
+    ("04", "冷却・電源保護", "冷やす・止めない", "B", "北米DC冷却 約13倍", "ダイキン", ["ダイキン", "GSユアサ", "オイレス"]),
+    ("05", "半導体", "計算する頭脳", "AB", "設備投資 +66%", "キオクシア", ["東京ｴﾚｸﾄﾛﾝ", "ディスコ", "信越化学"]),
+]
+# start cap（起点）
+fy, fh = 1.75, 1.05
+rect(s, 0.85, fy, 1.15, fh, fill=CHAR, radius=0.08)
+text(s, 0.85, fy, 1.15, fh, [[R("起点", 9, RGBColor(0xD7,0xDB,0xE0), True, FONT_M)],
+     [R("AI需要", 12.5, WHITE, True)], [R("の拡大", 10, WHITE, True)]],
+     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=1, line_spacing=1.02)
+# end cap（価値実現）
+rect(s, 10.55, fy, 1.93, fh, fill=INK, radius=0.06)
+text(s, 10.55, fy, 1.93, fh, [[R("価値実現", 9, RGBColor(0xC7,0xCF,0xDB), True, FONT_M)],
+     [R("AIサービス稼働", 12, WHITE, True)]],
+     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=1, line_spacing=1.05)
+
+col0, cw = 2.1, 1.64
+by, bh = 3.05, 3.25
+for i, (no, nm, sb, tag, sv, ss, chips) in enumerate(flow):
+    cx = col0 + i * cw
+    # chevron header（矢羽根）
+    ch = s.shapes.add_shape(MSO_SHAPE.CHEVRON, Inches(cx-0.10), Inches(fy), Inches(cw+0.20), Inches(fh))
+    ch.shadow.inherit = False
+    ch.fill.solid(); ch.fill.fore_color.rgb = RED; ch.line.fill.background()
+    tf = ch.text_frame; tf.word_wrap = True
+    tf.margin_left = Inches(0.12); tf.margin_right = Inches(0.18)
+    tf.margin_top = 0; tf.margin_bottom = 0; tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+    p = tf.paragraphs[0]; p.alignment = PP_ALIGN.CENTER; p.line_spacing = 1.0
+    r = p.add_run(); r.text = no + "  "; r.font.size = Pt(9); r.font.bold = True; r.font.color.rgb = RGBColor(0xFF,0xC9,0xCE); r.font.name = FONT_M
+    r = p.add_run(); r.text = nm; r.font.size = Pt(11.5); r.font.bold = True; r.font.color.rgb = WHITE; r.font.name = FONT
+    p2 = tf.add_paragraph(); p2.alignment = PP_ALIGN.CENTER; p2.space_before = Pt(1)
+    r = p2.add_run(); r.text = sb; r.font.size = Pt(8.5); r.font.color.rgb = RGBColor(0xFF,0xE2,0xE5); r.font.name = FONT
+    # body card
+    bx = cx + 0.02; bw = cw - 0.12
+    rect(s, bx, by, bw, bh, fill=WHITE, line=LINE, line_w=1, radius=0.05)
+    tagtxt = {"A": "A 発注者", "B": "B 請負", "AB": "A＋B"}[tag]
+    tagcol = CHAR if tag == "A" else RED
+    text(s, bx+0.12, by+0.12, bw-0.24, 0.3, [[R(tagtxt, 8.5, tagcol, True, FONT_M)]])
+    # stat highlight
+    text(s, bx+0.12, by+0.5, bw-0.24, 0.7,
+         [[R(sv, 11, RED, True)], [R(ss, 7.5, MUTE, False, FONT_M)]], space_after=1, line_spacing=1.05)
+    rect(s, bx+0.12, by+1.28, bw-0.24, 0.012, fill=LINE)
+    # companies
+    runs = [[R("代表企業", 7.5, MUTE, True, FONT_M)]]
+    for c in chips:
+        runs.append([R(c, 9.5, INK, True)])
+    text(s, bx+0.12, by+1.4, bw-0.24, bh-1.5, runs, space_after=3, line_spacing=1.05)
+
+# legend + note
+rect(s, 0.85, 6.5, 11.63, 0.62, fill=PANEL, line=LINE, line_w=1, radius=0.05)
+text(s, 1.1, 6.5, 11.2, 0.62,
+     [[R("現場管理の入り方：", 10, MUTE, True, FONT_M),
+       R(" A 発注者＝自社の設備投資を建てる側で管理", 10.5, CHAR, True),
+       R("　／　", 10.5, MUTE, False),
+       R("B 請負＝据付・試運転・保守を納める側で管理", 10.5, RED, True),
+       R("　（各段階は代表企業のみ表示）", 9.5, MUTE, False)]],
+     anchor=MSO_ANCHOR.MIDDLE)
+
+# =========================================================
+# SLIDE 3 — なぜ今
+# =========================================================
+s = slide()
+header(s, "2", "AI需要の連鎖が、製造業に投資と現場をもたらす。", "なぜ、いま製造業に追い風なのか")
 
 steps = [
     ("きっかけ", "AIは“電気と設備の塊”", "DC1棟で数万世帯分の電力。膨大な電源・冷却・建屋・半導体が要る。"),
@@ -175,7 +242,7 @@ text(s, 1.15, 6.4, 11.0, 0.4,
 # SLIDE 3 — 2モデル × 領域マップ
 # =========================================================
 s = slide()
-header(s, "2", "ふたつの活用モデルで、バリューチェーンを攻める。", "どの領域で、どんなテーマが生まれるか")
+header(s, "3", "ふたつの活用モデルで、バリューチェーンを攻める。", "どの領域で、どんなテーマが生まれるか")
 
 my = 1.55
 rect(s, 0.85, my, 5.75, 0.95, fill=CHARWA, line=CHAR, line_w=1.2, radius=0.09)
@@ -225,7 +292,7 @@ text(s, 0.9, ty+rh*len(rows)+0.14, 11.6, 0.5,
 # SLIDE 4 — どこから攻めるか
 # =========================================================
 s = slide()
-header(s, "3", "据付・保守は「請負」で、工場増設は「発注者」で。", "どこから攻めるか — 狙い目と次の一歩")
+header(s, "4", "据付・保守は「請負」で、工場増設は「発注者」で。", "どこから攻めるか — 狙い目と次の一歩")
 
 mx = [
     ("領域", "A 発注者", "B 請負"),
