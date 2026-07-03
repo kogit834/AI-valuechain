@@ -1,0 +1,158 @@
+<style>
+  :root{
+    --bg:#FFFFFF; --panel:#F3F4F6; --panel2:#F8F9FB;
+    --ink:#1A1D21; --body:#3C4148; --mute:#8A9098;
+    --line:#E2E4E9;
+    --red:#E60012; --red-dk:#C10010; --redwa:#FDECEE; --redbd:#F3C7CD;
+    --char:#454B54; --charwa:#ECEEF1;
+    --shadow:0 1px 2px rgba(20,25,33,.05),0 8px 24px rgba(20,25,33,.07);
+    --mono:ui-monospace,"SFMono-Regular","SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+    --jp:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","YuGothic","Noto Sans JP","Meiryo",sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0E1013; --panel:#181B20; --panel2:#141619;
+      --ink:#F0F2F5; --body:#B8BEC7; --mute:#7A828C;
+      --line:#262A30;
+      --red:#FF3A48; --red-dk:#E6202E; --redwa:#2A1216; --redbd:#5A2027;
+      --char:#AEB6C0; --charwa:#20242B;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#FFFFFF; --panel:#F3F4F6; --panel2:#F8F9FB; --ink:#1A1D21; --body:#3C4148; --mute:#8A9098;
+    --line:#E2E4E9; --red:#E60012; --red-dk:#C10010; --redwa:#FDECEE; --redbd:#F3C7CD; --char:#454B54; --charwa:#ECEEF1;
+    --shadow:0 1px 2px rgba(20,25,33,.05),0 8px 24px rgba(20,25,33,.07);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0E1013; --panel:#181B20; --panel2:#141619; --ink:#F0F2F5; --body:#B8BEC7; --mute:#7A828C;
+    --line:#262A30; --red:#FF3A48; --red-dk:#E6202E; --redwa:#2A1216; --redbd:#5A2027; --char:#AEB6C0; --charwa:#20242B;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--jp);line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:clamp(20px,3.5vw,44px) clamp(14px,3vw,30px) 60px}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:700;margin:0 0 14px}
+  .eyebrow::before{content:"";width:26px;height:26px;border-radius:7px;background:var(--red);display:inline-block}
+  h1{font-size:clamp(1.6rem,3.6vw,2.35rem);line-height:1.2;letter-spacing:-.01em;font-weight:800;margin:0 0 .4em;text-wrap:balance}
+  .dek{font-size:clamp(.98rem,1.8vw,1.12rem);color:var(--body);max-width:70ch;margin:0}
+
+  .flowcap{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:30px 0 12px;font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;color:var(--mute)}
+  .flowcap b{color:var(--ink)}
+  .flowcap .mid{flex:1;height:2px;background:linear-gradient(90deg,var(--line),var(--red) 60%,var(--red));border-radius:2px;position:relative}
+  .flowcap .mid::after{content:"▶";position:absolute;right:-2px;top:50%;transform:translateY(-50%);color:var(--red);font-size:.8rem}
+
+  /* ---- horizontal chevron flow ---- */
+  .flow{display:grid;grid-template-columns:1.1fr repeat(5,1.55fr) 1.1fr;gap:7px;align-items:stretch}
+  .cap{border-radius:12px;padding:16px 12px;display:flex;flex-direction:column;justify-content:center;text-align:center;box-shadow:var(--shadow)}
+  .cap--start{background:var(--char);color:#fff}
+  .cap--end{background:var(--ink);color:#fff}
+  .cap .cl{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:6px}
+  .cap .ct{font-size:.92rem;font-weight:800;line-height:1.35}
+  .cap .cs{font-size:.72rem;opacity:.85;margin-top:5px;line-height:1.4}
+
+  .stage{display:flex;flex-direction:column;gap:8px;min-width:0}
+  .chev{position:relative;background:var(--red);color:#fff;padding:13px 14px 13px 26px;min-height:74px;display:flex;flex-direction:column;justify-content:center;
+    clip-path:polygon(0 0, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 0 100%, 15px 50%);}
+  .stage:first-of-type .chev{clip-path:polygon(0 0, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 0 100%);padding-left:16px}
+  .chev .no{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.1em;opacity:.85}
+  .chev .nm{font-size:1rem;font-weight:800;line-height:1.25;letter-spacing:-.01em}
+  .chev .sb{font-size:.72rem;opacity:.9;margin-top:2px}
+
+  .body{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 12px 13px;box-shadow:var(--shadow);flex:1;display:flex;flex-direction:column;gap:9px}
+  .role{align-self:flex-start;font-family:var(--mono);font-size:.64rem;font-weight:700;letter-spacing:.04em;padding:4px 9px;border-radius:999px}
+  .role--b{background:var(--redwa);color:var(--red-dk);border:1px solid var(--redbd)}
+  .role--a{background:var(--charwa);color:var(--char);border:1px solid var(--line)}
+  .role--ab{background:linear-gradient(90deg,var(--charwa) 50%,var(--redwa) 50%);color:var(--ink);border:1px solid var(--line)}
+  .desc{font-size:.8rem;color:var(--body);margin:0}
+  .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto}
+  .chip{font-size:.74rem;font-weight:700;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:3px 7px;line-height:1.3}
+  .more{font-size:.68rem;color:var(--mute);align-self:center}
+
+  /* legend + support layer */
+  .support{margin-top:22px;background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:16px 20px;display:flex;flex-wrap:wrap;gap:10px 26px;align-items:center}
+  .support .st{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:700}
+  .support .lg{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;color:var(--body)}
+  .support .sw{width:26px;height:14px;border-radius:4px;flex:none}
+  .support .sw.a{background:var(--char)} .support .sw.b{background:var(--red)}
+  .support .sw.ab{background:linear-gradient(90deg,var(--char) 50%,var(--red) 50%)}
+
+  .note{margin-top:20px;color:var(--mute);font-size:.82rem;line-height:1.7;border-top:1px solid var(--line);padding-top:16px}
+  .note b{color:var(--body)}
+
+  /* ---- responsive: stack vertically, chevrons point down ---- */
+  @media (max-width:860px){
+    .flow{grid-template-columns:1fr;gap:10px}
+    .cap{padding:14px}
+    .stage{gap:0}
+    .chev{clip-path:none !important;border-radius:11px 11px 0 0;padding:12px 16px !important;min-height:0;flex-direction:row;align-items:baseline;gap:10px}
+    .chev .nm{font-size:1rem}
+    .chev .sb{margin-top:0}
+    .body{border-radius:0 0 11px 11px;border-top:none}
+    .stage{position:relative;margin-bottom:16px}
+    .stage:not(:last-of-type)::after{content:"▼";position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);color:var(--red);font-size:.9rem;z-index:2}
+    .flowcap .mid::after{content:""}
+  }
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">AI Infrastructure · Value Chain Flow</p>
+  <h1>AIインフラのバリューチェーン</h1>
+  <p class="dek">AI需要の拡大は、<b style="color:var(--ink)">電気をつくる川上</b>から、<b style="color:var(--ink)">計算する半導体の川下</b>まで、価値を一本の流れとして生み出します。各段階に、ANDPADが入り込む現場（<span style="color:var(--char);font-weight:700">A 発注者</span>／<span style="color:var(--red);font-weight:700">B 請負</span>）があります。</p>
+
+  <div class="flowcap">
+    <span>起点：<b>AI需要の拡大</b></span>
+    <span class="mid"></span>
+    <span>価値の流れ（川上 → 川下）</span>
+  </div>
+
+  <div class="flow" id="flow"></div>
+
+  <div class="support">
+    <span class="st">現場管理の入り方</span>
+    <span class="lg"><span class="sw a"></span><b style="color:var(--char)">A 発注者</b>：自社の設備投資を、建てる側で管理</span>
+    <span class="lg"><span class="sw b"></span><b style="color:var(--red-dk)">B 請負</b>：据付・試運転・保守を、納める側で管理</span>
+    <span class="lg"><span class="sw ab"></span>A / B 両取り</span>
+  </div>
+
+  <p class="note"><b>見方：</b>上段の矢羽根が「AI需要が生む価値の流れ」。各段階のカードに、代表的な国内プレーヤーと、ANDPADの現場管理が刺さる入り方を示しています。掲載は各段階の代表企業（全128社の一部）。数値・根拠は企業マスタ（valuechain_master.xlsx）と参考資料を参照。<span style="font-family:var(--mono)">作成 2026-07</span></p>
+</div>
+
+<script>
+  const START={cl:"TRIGGER",ct:"AI需要の拡大",cs:"生成AI・データセンター建設ラッシュ"};
+  const END={cl:"VALUE",ct:"AIサービス稼働",cs:"データセンターが動き、価値が実現"};
+  const STAGES=[
+    {no:"01",nm:"発電・電源",sb:"電気をつくる",tag:"B",role:"B 据付・保守",
+     desc:"AIの計算に不可欠な電力。ガスタービン・非常用発電機が最上流。",
+     chips:["三菱重工","IHI","ヤンマー","デンヨー"]},
+    {no:"02",nm:"送変電・電線",sb:"電気を送る・変える",tag:"AB",role:"A＋B",
+     desc:"高電圧で送り、DC向けに変換。変圧器は世界的に品薄で受注は数年先まで。",
+     chips:["日立","三菱電機","ダイヘン","フジクラ","電力4社"]},
+    {no:"03",nm:"DC建設・設備工事",sb:"箱を建てる",tag:"B",role:"B 設備工事（本命）",
+     desc:"巨大な建屋を建設。元請けゼネコンと電気・空調のサブコンが主役。",
+     chips:["鹿島","大林組","きんでん","高砂熱学"]},
+    {no:"04",nm:"冷却・電源保護",sb:"冷やす・止めない",tag:"B",role:"B 据付〜アフター（最有力）",
+     desc:"高発熱サーバを液冷で冷やし、UPS・非常用で止めない。据付・保守の宝庫。",
+     chips:["ダイキン","GSユアサ","オイレス"]},
+    {no:"05",nm:"半導体",sb:"計算する頭脳",tag:"AB",role:"A＋B",
+     desc:"AIチップ本体は海外勢が強いが、日本は製造装置・材料で世界的シェア。",
+     chips:["東京エレクトロン","ディスコ","キオクシア","信越化学"]},
+  ];
+
+  const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+  const cap=(o,cls)=>`<div class="cap ${cls}"><div class="cl">${esc(o.cl)}</div><div class="ct">${esc(o.ct)}</div><div class="cs">${esc(o.cs)}</div></div>`;
+  const chip=c=>`<span class="chip">${esc(c)}</span>`;
+  const roleCls=t=>t==="A"?"role--a":t==="AB"?"role--ab":"role--b";
+  const stage=s=>`<div class="stage">
+      <div class="chev"><span class="no">${esc(s.no)}</span><span class="nm">${esc(s.nm)}</span><span class="sb">${esc(s.sb)}</span></div>
+      <div class="body">
+        <span class="role ${roleCls(s.tag)}">${esc(s.role)}</span>
+        <p class="desc">${esc(s.desc)}</p>
+        <div class="chips">${s.chips.map(chip).join("")}</div>
+      </div>
+    </div>`;
+  document.getElementById("flow").innerHTML =
+    cap(START,"cap--start") + STAGES.map(stage).join("") + cap(END,"cap--end");
+</script>
