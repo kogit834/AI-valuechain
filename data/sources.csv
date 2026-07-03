@@ -1,1 +1,41 @@
 source_id,company_id,source_type,title,publisher,url,published_date,retrieved_date
+S001,C001,,三菱重工社長、26年もガスタービン需要高水準－市場規模70－100GW程度,,https://www.bloomberg.com/jp/news/articles/2026-05-12/TEWCWHKK3NYV00,Bloomberg 2026-05-12,2026-07-03
+S002,C001,,三菱重工、ガスタービンに日米で1000億円超 電力需要増で生産能力2倍,,https://www.nikkei.com/article/DGXZQOUC25AZC0V20C26A6000000/,日本経済新聞 2026-06-XX,2026-07-03
+S003,C001,,三菱重工業、通期受注高・売上高を上方修正する理由,,https://newswitch.jp/p/47503,ニュースイッチ（日刊工業新聞社、決算開示に基づく報道） 2026-02-04,2026-07-03
+S004,C002,,決算短信・業績予想の修正,,https://www.khi.co.jp/ir/library/financial_results/,川崎重工業IRライブラリ,2026-07-03
+S005,C002,,非常用発電設備（カワサキPUシリーズ）,,https://www.khi.co.jp/energy/gas_turbines/emergency.html,川崎重工業,2026-07-03
+S006,C002,,決算:川崎重工の4〜6月、事業利益21%増,,https://www.nikkei.com/article/DGXZQOUC062P20W5A800C2000000/,日本経済新聞（決算開示に基づく報道） 2025-08-XX,2026-07-03
+S007,C003,,IHI原動機の保坂知洋社長「データセンター向け発電機を高出力化」,,https://www.nikkei.com/article/DGXZQOUC214P30R20C26A1000000/,日本経済新聞 2026-01-XX,2026-07-03
+S008,C003,,決算:IHIの純利益・受注高が上振れ 26年3月期,,https://www.nikkei.com/article/DGXZQOUB059OW0V01C25A1000000/,日本経済新聞（決算開示に基づく報道） 2026-01-XX,2026-07-03
+S009,C003,,決算短信･決算説明資料,,https://www.ihi.co.jp/ir/library/statements/,IHI IR資料室,2026-07-03
+S010,C004,,決算:富士電機5年連続最高益、4〜12月営業 データセンター用電源など増産へ,,https://www.nikkei.com/article/DGXZQOUB295Z60Z20C26A1000000/,日本経済新聞（決算開示に基づく報道） 2026-01-XX,2026-07-03
+S011,C004,,富士電機は大幅反発、施設電源システムの受注増加で２７年３月期営業益は４％増を計画,,https://kabutan.jp/news/marketnews/?b=n202604300517,株探ニュース（決算発表に基づく報道） 2026-04-30,2026-07-03
+S012,C004,,財務・業績,,https://www.fujielectric.co.jp/ir/finance/index.html,富士電機IRサイト,2026-07-03
+S013,C005,,沼津事業所 変圧器工場の増産に向けた新建屋の増築,,https://www.meidensha.co.jp/news/news_03/news_03_01/1261314_10499.html,明電舎プレスリリース 2025-11-04,2026-07-03
+S014,C005,,中期経営計画2027,,https://www.meidensha.co.jp/news/news_03/news_03_01/__icsFiles/afieldfile/2025/05/13/norenmid_2.pdf,明電舎IR資料 2025-05-13,2026-07-03
+S015,C005,,IRライブラリー,,https://www.meidensha.co.jp/ir/ir_04/,明電舎IRサイト,2026-07-03
+S016,C006,,デンヨー(株)【6517】：決算情報,,https://finance.yahoo.co.jp/quote/6517.T/financials,Yahoo!ファイナンス（決算短信データに基づく） 2026年5月期,2026-07-03
+S017,C006,,Generators,,https://www.denyo.co.jp/english/products/generator/,"Denyo Co., Ltd.",2026-07-03
+S018,C007,,データセンターなどのDX社会を支える大容量非常用発電機「GY175シリーズ」を商品化,,https://www.yanmar.com/jp/energy/news/2025/10/08/157276.html,ヤンマープレスリリース 2025-10-08,2026-07-03
+S019,C007,,福岡県北九州市にデータセンター向け非常用発電システムの新工場を建設,,https://www.yanmar.com/jp/energy/news/2026/04/07/163592.html,ヤンマープレスリリース 2026-04-07,2026-07-03
+S020,C007,,ヤンマー、北九州に発電機新工場 データセンター向け28年稼働,,https://www.nikkei.com/article/DGXZQOJC070US0X00C26A4000000/,日本経済新聞 2026-04-XX,2026-07-03
+S021,C008,,GE Vernova reports first quarter 2026 financial results and raises 2026 guidance,,https://www.gevernova.com/news/press-releases/ge-vernova-reports-first-quarter-2026-financial,GE Vernova（決算プレスリリース） 2026-04-XX,2026-07-03
+S022,C008,,GE Vernova Inc. - Form 8-K - FY2026,,https://www.sec.gov/Archives/edgar/data/0001996810/000199681026000063/gevpressrelease1q26.htm,SEC EDGAR（8-K添付プレスリリース） 2026-04-XX,2026-07-03
+S023,C008,,GE Vernova's gas turbine reservations and order backlog grows to 100 GW,,https://www.industrialinfo.com/news/article/ge-vernovas-global-natural-gas-turbine-reservations-and-order-backlog-grows-to-100-gw--356705,Industrial Info Resources 2026-04-XX,2026-07-03
+S024,C009,,Siemens Energy - Earnings Release Q1 FY 2026,,https://www.siemens-energy.com/global/en/home/press-releases/earnings-release-q1-fy-2026.html,Siemens Energy（決算プレスリリース） 2026年2月頃,2026-07-03
+S025,C009,,Siemens Energy raises 2026 outlook as record $20B quarterly orders driven by data centres and grid demand,,https://app.dealroom.co/news/feed/siemens-energy-raises-2026-outlook-as-record-20b-quarterly-orders-driven-by-data-centres-and-grid-demand,Dealroom.co（決算開示に基づく報道） 2026年2月頃,2026-07-03
+S026,C010,,Powering Growth: Cummins' Solutions for Data Center Backup Power,,https://www.cummins.com/en-na/news/2025/11/12/powering-growth-cummins-solutions-data-center-backup-power,Cummins Inc.（自社ニュース） 2025-11-12,2026-07-03
+S027,C010,,Reliable Generators for Data Centers,,https://www.cummins.com/en-na/generators/data-centers,Cummins Inc.,2026-07-03
+S028,C010,,"Cummins, Caterpillar to Get Boost From Data Center Boom",,https://www.ttnews.com/articles/cummins-caterpillar-data,Transport Topics 2025年,2026-07-03
+S029,C011,,"Caterpillar to triple power generation capacity, raises 2030 targets",,https://www.manufacturingdive.com/news/caterpillar-triple-power-generation-capacity-raises-2030-targets-q1-2026-earnings/819078/,Manufacturing Dive（決算発表に基づく報道） 2026年4月頃,2026-07-03
+S030,C011,,"Caterpillar Q1 2026: $63B Backlog, 22% Revenue Surge",,https://betafinch.com/blog/caterpillar-cat-beta-explained,Beta Finch（決算数値の分析記事） 2026年4月頃,2026-07-03
+S031,C011,,TRANSCRIPT - 2026 Caterpillar Inc. Q4 2025 Earnings Conference Call,,https://s25.q4cdn.com/358376879/files/doc_financials/2025/q4/updated/4Q-2025-Caterpillar-Inc-Earnings-Conference-Call_Transcript.pdf,Caterpillar Inc.（決算説明会トランスクリプト、IR公式配布資料） 2026年1月,2026-07-03
+S032,C012,,GENERAC HOLDINGS INC. - Form 8-K - FY2026,,https://www.sec.gov/Archives/edgar/data/0001474735/000143774926003700/ex_919348.htm,SEC EDGAR（8-K決算プレスリリース添付） 2026年,2026-07-03
+S033,C012,,Generac's $700 Million Data Center Backlog Is Building the Case for a $250 Price Target,,https://www.tikr.com/blog/generacs-700-million-data-center-backlog-is-building-the-case-for-a-250-price-target,TIKR.com（決算説明会コメントに基づく分析） 2026年,2026-07-03
+S034,C013,,Wärtsilä continues to expand its data center footprint with new 790 MW order in Texas,,https://www.wartsila.com/media/news/23-04-2026-wartsila-continues-to-expand-its-data-center-footprint-with-new-790-mw-order-in-texas-the-next-data-center-alley-3744599,Wärtsilä（自社プレスリリース） 2026-04-23,2026-07-03
+S035,C013,,Wärtsilä secures new order to power next wave of AI-driven data center growth in the U.S.,,https://www.wartsila.com/usa/media/news/29-06-2026-wartsila-secures-new-order-to-power-next-wave-of-ai-driven-data-center-growth-in-the-u-s--3767555,Wärtsilä（自社プレスリリース） 2026-06-29,2026-07-03
+S036,C013,,Wärtsilä continues growth in the data center segment with a 507 MW order in the US,,https://www.wartsila.com/media/news/20-11-2025-wartsila-continues-growth-in-the-data-center-segment-with-a-507-mw-order-in-the-us-offering-engines-as-a-reliable-power-solution-3686573,Wärtsilä（自社プレスリリース） 2025-11-20,2026-07-03
+S037,C014,,Strong results and record investments: Rolls-Royce Power Systems continues on growth path,,https://www.mtu-solutions.com/na/en/pressreleases/2026/Strong-results-and-record-investments-Rolls-Royce-Power-Systems-continues-on-growth-path.html,mtu Solutions（Rolls-Royce Power Systems公式プレスリリース） 2026年,2026-07-03
+S038,C014,,Rolls-Royce powers data center growth with increased investment in U.S. manufacturing,,https://www.rolls-royce.com/media/press-releases/2025/03-06-2025-rr-powers-data-center-growth-with-increased-investment-in-us-manufacturing.aspx,Rolls-Royce plc（公式プレスリリース） 2025-06-03,2026-07-03
+S039,C015,,Rehlko and Liebherr Partner on Strategic Capacity Expansion to Support Accelerating Data Center Demand for Resilient Power Solutions,,https://natlawreview.com/press-releases/rehlko-and-liebherr-partner-strategic-capacity-expansion-support,National Law Review（プレスリリース転載） 2025年,2026-07-03
+S040,C015,,Data Center Industry Generators,,https://power.kohler.com/na-en/generators/industrial/data-center,Kohler Power（製品ページ）,2026-07-03
