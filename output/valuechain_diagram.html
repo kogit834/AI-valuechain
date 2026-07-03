@@ -1,0 +1,267 @@
+<style>
+  :root{
+    --bg:#E7EBF0; --grid:#D6DCE5;
+    --surface:#FBFCFE; --surface-2:#F1F4F8;
+    --ink:#132038; --ink-soft:#4C5B74; --ink-faint:#7C8AA1;
+    --line:#C7D0DD; --line-soft:#DCE3EC;
+    --copper:#B0602A; --copper-ink:#9A5122; --copper-wash:#F0E1D4;
+    --cyan:#0F7A83; --cyan-ink:#0C6068; --cyan-wash:#D9EBEC;
+    --shadow:0 1px 2px rgba(19,32,56,.06),0 6px 20px rgba(19,32,56,.07);
+    --mono:ui-monospace,"SFMono-Regular","SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+    --jp:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","YuGothic","Noto Sans JP","Meiryo",sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0B1322; --grid:#141F33;
+      --surface:#111D33; --surface-2:#0E1829;
+      --ink:#E7EEF7; --ink-soft:#9DAEC6; --ink-faint:#6C7E99;
+      --line:#28374F; --line-soft:#1D2A3F;
+      --copper:#D98A54; --copper-ink:#E19A6A; --copper-wash:#2A1E14;
+      --cyan:#4EB4BD; --cyan-ink:#63C4CC; --cyan-wash:#0E2427;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.34);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#E7EBF0; --grid:#D6DCE5; --surface:#FBFCFE; --surface-2:#F1F4F8;
+    --ink:#132038; --ink-soft:#4C5B74; --ink-faint:#7C8AA1;
+    --line:#C7D0DD; --line-soft:#DCE3EC;
+    --copper:#B0602A; --copper-ink:#9A5122; --copper-wash:#F0E1D4;
+    --cyan:#0F7A83; --cyan-ink:#0C6068; --cyan-wash:#D9EBEC;
+    --shadow:0 1px 2px rgba(19,32,56,.06),0 6px 20px rgba(19,32,56,.07);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0B1322; --grid:#141F33; --surface:#111D33; --surface-2:#0E1829;
+    --ink:#E7EEF7; --ink-soft:#9DAEC6; --ink-faint:#6C7E99;
+    --line:#28374F; --line-soft:#1D2A3F;
+    --copper:#D98A54; --copper-ink:#E19A6A; --copper-wash:#2A1E14;
+    --cyan:#4EB4BD; --cyan-ink:#63C4CC; --cyan-wash:#0E2427;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.34);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:var(--jp); color:var(--ink);
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;
+    line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1020px;margin:0 auto;padding:clamp(20px,4vw,52px) clamp(16px,4vw,32px) 72px}
+
+  /* header */
+  .eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--copper-ink);margin:0 0 14px}
+  h1{font-size:clamp(1.8rem,5vw,2.9rem);line-height:1.18;letter-spacing:-.01em;margin:0 0 .5em;text-wrap:balance;font-weight:800}
+  h1 .accent{color:var(--copper-ink)}
+  .dek{font-size:clamp(1rem,2.4vw,1.18rem);color:var(--ink-soft);max-width:60ch;margin:0}
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:11px 16px;box-shadow:var(--shadow)}
+  .stat b{font-family:var(--mono);font-size:1.4rem;font-weight:700;display:block;line-height:1;letter-spacing:-.02em}
+  .stat span{font-size:.76rem;color:var(--ink-faint);letter-spacing:.04em}
+
+  .rule{height:1px;background:var(--line);border:0;margin:40px 0}
+
+  /* logic strip */
+  .why-title{font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 16px}
+  .logic{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:12px;align-items:stretch}
+  .logic .step{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 20px;box-shadow:var(--shadow)}
+  .logic .step .k{font-family:var(--mono);font-size:.72rem;color:var(--copper-ink);letter-spacing:.08em}
+  .logic .step h3{margin:.35em 0 .3em;font-size:1.02rem;font-weight:800;line-height:1.35}
+  .logic .step p{margin:0;font-size:.86rem;color:var(--ink-soft)}
+  .logic .arw{display:flex;align-items:center;justify-content:center;color:var(--copper);font-family:var(--mono);font-size:1.5rem;font-weight:700}
+  @media(max-width:720px){
+    .logic{grid-template-columns:1fr}
+    .logic .arw{transform:rotate(90deg);padding:2px 0}
+  }
+
+  /* chain */
+  .chain{position:relative;margin-top:8px;padding-left:0}
+  .chain::before{content:"";position:absolute;left:26px;top:20px;bottom:40px;width:2px;
+    background:linear-gradient(var(--copper) 0%,var(--copper) 62%,var(--cyan) 88%);border-radius:2px;opacity:.55}
+  .stage{position:relative;padding-left:74px;margin-bottom:30px}
+  .node{position:absolute;left:0;top:2px;width:54px;height:54px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:1.15rem;
+    background:var(--surface);border:2px solid var(--copper);color:var(--copper-ink);box-shadow:var(--shadow);z-index:2}
+  .stage[data-accent="cyan"] .node{border-color:var(--cyan);color:var(--cyan-ink)}
+
+  .stage__head{margin-bottom:14px}
+  .kick{font-family:var(--mono);font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--copper-ink);margin:0 0 3px}
+  .stage[data-accent="cyan"] .kick{color:var(--cyan-ink)}
+  .stage__head h2{margin:0 0 .35em;font-size:clamp(1.25rem,3.2vw,1.6rem);font-weight:800;letter-spacing:-.01em;line-height:1.25}
+  .lead{margin:0;color:var(--ink-soft);font-size:.95rem;max-width:64ch}
+  .why{display:inline-flex;gap:8px;align-items:baseline;margin-top:12px;padding:7px 13px;border-radius:9px;
+    background:var(--copper-wash);border:1px solid transparent;font-size:.85rem;color:var(--ink)}
+  .stage[data-accent="cyan"] .why{background:var(--cyan-wash)}
+  .why .lab{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;color:var(--copper-ink);text-transform:uppercase;flex:none}
+  .stage[data-accent="cyan"] .why .lab{color:var(--cyan-ink)}
+
+  .group{margin-top:16px}
+  .group__label{display:flex;align-items:center;gap:10px;margin:0 0 9px;font-size:.82rem;font-weight:700;color:var(--ink)}
+  .group__label::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--copper);flex:none}
+  .stage[data-accent="cyan"] .group__label::before{background:var(--cyan)}
+  .group__note{font-weight:400;color:var(--ink-faint);font-size:.78rem}
+
+  .chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:9px}
+  .chip{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);
+    border-radius:10px;padding:9px 11px;box-shadow:var(--shadow)}
+  .chip .conf{width:12px;height:12px;border-radius:50%;flex:none;border:2px solid var(--copper)}
+  .chip .conf--h{background:var(--copper)}
+  .chip .conf--m{background:linear-gradient(90deg,var(--copper) 50%,transparent 50%)}
+  .chip .conf--l{background:transparent}
+  .chip .nm{font-size:.88rem;font-weight:700;line-height:1.25;flex:1;min-width:0}
+  .chip .tk{font-family:var(--mono);font-size:.72rem;color:var(--ink-faint);flex:none;letter-spacing:.02em}
+  .chip .tk.priv{color:var(--copper-ink);opacity:.85}
+
+  /* legend + footer */
+  .legend{display:flex;flex-wrap:wrap;gap:18px 26px;align-items:center;background:var(--surface);
+    border:1px solid var(--line);border-radius:14px;padding:16px 20px;box-shadow:var(--shadow);margin-top:8px}
+  .legend .lg{display:flex;align-items:center;gap:9px;font-size:.83rem;color:var(--ink-soft)}
+  .legend .conf{width:12px;height:12px;border-radius:50%;border:2px solid var(--copper);flex:none}
+  .legend .conf--h{background:var(--copper)}
+  .legend .conf--m{background:linear-gradient(90deg,var(--copper) 50%,transparent 50%)}
+  .legend .conf--l{background:transparent}
+  .legend .lgt{font-family:var(--mono);font-size:.72rem;color:var(--ink-faint)}
+
+  footer{margin-top:34px;color:var(--ink-faint);font-size:.82rem;line-height:1.75}
+  footer b{color:var(--ink-soft)}
+  a{color:var(--copper-ink)}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">AI Infrastructure · Value Chain Map</p>
+    <h1>AI需要の拡大で<br><span class="accent">どこが伸びるのか</span>。</h1>
+    <p class="dek">生成AIの普及は、巨大なデータセンター建設ラッシュを引き起こしています。その裏側で「歴史的な増収増益」が見込める産業群を、電気をつくる川上から、AIチップをつくる川下まで、5つのステージで整理しました。掲載は<b>国内の主要プレーヤー</b>です。</p>
+    <div class="stats">
+      <div class="stat"><b>5</b><span>ステージ</span></div>
+      <div class="stat"><b>14</b><span>バリューチェーン区分</span></div>
+      <div class="stat"><b>50+</b><span>国内主要企業</span></div>
+    </div>
+  </header>
+
+  <hr class="rule">
+
+  <p class="why-title">▸ なぜ、この分野なのか（3ステップで理解する）</p>
+  <div class="logic">
+    <div class="step">
+      <div class="k">01 きっかけ</div>
+      <h3>AIは“電気の塊”</h3>
+      <p>生成AIの計算には膨大な電力が必要。データセンター1棟で数万世帯分を消費します。</p>
+    </div>
+    <div class="arw">→</div>
+    <div class="step">
+      <div class="k">02 何が起きる</div>
+      <h3>巨大DCの建設ラッシュ</h3>
+      <p>電力・建物・冷却・半導体を一度に大量に必要とする、すそ野の広い需要が生まれます。</p>
+    </div>
+    <div class="arw">→</div>
+    <div class="step">
+      <div class="k">03 だから</div>
+      <h3>日本企業に商機</h3>
+      <p>重電・建設・電線・半導体装置など、日本が強い分野に受注が集中しています。</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="chain" id="chain"></div>
+
+  <div class="legend">
+    <span class="lgt">確度（増収増益の根拠の強さ）:</span>
+    <span class="lg"><span class="conf conf--h"></span>高 &nbsp;一次情報で定量的な根拠あり</span>
+    <span class="lg"><span class="conf conf--m"></span>中 &nbsp;一次情報はあるが定性的</span>
+    <span class="lg"><span class="conf conf--l"></span>低 &nbsp;二次情報が中心</span>
+  </div>
+
+  <footer>
+    <p><b>この図の使い方</b>　製造業・建設業向けの現場管理サービスの営業ターゲティング用に整理したものです。とくに<b>ステージ03（データセンター建設・設備工事）</b>と<b>ステージ01–02（重電・送配電）</b>が最優先ターゲット領域です。</p>
+    <p>コード（例：<span style="font-family:var(--mono)">6501</span>）は証券コード。企業は各社の決算資料・IR発表・中期経営計画などの一次情報にもとづき選定し、確度を付与しています。詳細な根拠と出典は各セグメントの調査メモ（<span style="font-family:var(--mono)">research/</span>）および企業マスタ（<span style="font-family:var(--mono)">output/valuechain_master.xlsx</span>）を参照。海外の主要企業を含む全体像は別途整理しています。　<span class="lgt">作成 2026-07 / データ確度は決算期ごとに更新前提</span></p>
+  </footer>
+</div>
+
+<script>
+  const STAGES=[
+    {num:"01",accent:"copper",kick:"発電・タービン",title:"電気をつくる",
+     lead:"AIの計算はまず電力から。安定稼働のための発電設備や、停電に備える非常用発電機が最上流に位置します。",
+     why:"ガスタービン・非常用発電機の受注残が過去最高水準に拡大。",
+     groups:[
+       {label:"発電機・タービン・非常用電源",items:[
+         {nm:"三菱重工業",tk:"7011",c:"h"},{nm:"川崎重工業",tk:"7012",c:"m"},
+         {nm:"IHI",tk:"7013",c:"m"},{nm:"ヤンマーHD",tk:"非上場",c:"m",priv:1},
+         {nm:"デンヨー",tk:"6517",c:"m"}]}
+     ]},
+    {num:"02",accent:"copper",kick:"送変電・電線・電力",title:"電気を送り、変える",
+     lead:"つくった電気を高電圧で運び、データセンターで使える形に変換します。核となる変圧器は世界的に品薄で、受注は数年先まで積み上がっています。",
+     why:"特別高圧変圧器の受注残が数年分に。電力会社も系統増強へ設備投資を拡大。",
+     groups:[
+       {label:"変圧器・重電メーカー",items:[
+         {nm:"日立製作所",tk:"6501",c:"h"},{nm:"三菱電機",tk:"6503",c:"h"},
+         {nm:"東芝エネルギーシステムズ",tk:"非上場",c:"h",priv:1},{nm:"富士電機",tk:"6504",c:"h"},
+         {nm:"明電舎",tk:"6508",c:"m"},{nm:"ダイヘン",tk:"6622",c:"h"}]},
+       {label:"送配電機器（開閉装置・GIS）",note:"重電大手も同分野を手掛ける",items:[
+         {nm:"日新電機",tk:"非上場",c:"m",priv:1}]},
+       {label:"電線・ケーブル（電力・光ファイバー）",items:[
+         {nm:"古河電気工業",tk:"5801",c:"h"},{nm:"住友電気工業",tk:"5802",c:"h"},
+         {nm:"フジクラ",tk:"5803",c:"h"},{nm:"SWCC",tk:"5805",c:"h"}]},
+       {label:"電力会社（送配電投資・レベニューキャップ）",items:[
+         {nm:"東京電力HD",tk:"9501",c:"m"},{nm:"中部電力",tk:"9502",c:"m"},
+         {nm:"関西電力",tk:"9503",c:"m"},{nm:"九州電力",tk:"9508",c:"h"}]}
+     ]},
+    {num:"03",accent:"copper",kick:"建設・設備工事",title:"データセンターを建てる",
+     lead:"AIサーバを収める巨大な建屋を建てます。元請けの「ゼネコン」と、電気・空調を担う「サブコン（専門工事会社）」が主役。現場管理サービスの本命ターゲットです。",
+     why:"ゼネコン・サブコンともデータセンター案件で受注が過去最高を更新。",
+     groups:[
+       {label:"元請けゼネコン",items:[
+         {nm:"鹿島建設",tk:"1812",c:"m"},{nm:"大成建設",tk:"1801",c:"m"},
+         {nm:"清水建設",tk:"1803",c:"m"},{nm:"大林組",tk:"1802",c:"h"},
+         {nm:"竹中工務店",tk:"非上場",c:"m",priv:1},{nm:"戸田建設",tk:"1860",c:"m"},
+         {nm:"西松建設",tk:"1820",c:"m"}]},
+       {label:"電気・空調 設備工事（サブコン）",items:[
+         {nm:"きんでん",tk:"1944",c:"h"},{nm:"関電工",tk:"1942",c:"h"},
+         {nm:"クラフティア（旧九電工）",tk:"1959",c:"h"},{nm:"ダイダン",tk:"1980",c:"h"},
+         {nm:"高砂熱学工業",tk:"1969",c:"h"},{nm:"新日本空調",tk:"1952",c:"h"},
+         {nm:"三機工業",tk:"1961",c:"h"},{nm:"住友電設",tk:"1949",c:"h"},
+         {nm:"日本電設工業",tk:"1950",c:"m"},{nm:"東洋熱工業",tk:"非上場",c:"m",priv:1}]}
+     ]},
+    {num:"04",accent:"copper",kick:"冷却・電源保護・特殊設備",title:"冷やす・止めない・守る",
+     lead:"高発熱のAIサーバを冷やし（液冷・空調）、一瞬の停電も許さず（UPS・非常用）、地震から守る（免震）。データセンターの“縁の下”を支える設備群です。",
+     why:"液冷・UPS・免震の各社でデータセンター向け受注が拡大。",
+     groups:[
+       {label:"冷却・空調（液冷・チラー）",items:[
+         {nm:"ダイキン工業",tk:"6367",c:"h"},{nm:"三菱重工サーマルシステムズ",tk:"非上場",c:"m",priv:1},
+         {nm:"荏原冷熱システム",tk:"非上場",c:"l",priv:1}]},
+       {label:"非常用電源・UPS（蓄電池）",items:[
+         {nm:"ジーエス・ユアサ",tk:"6674",c:"h"},{nm:"エア・ウォーター",tk:"4088",c:"h"}]},
+       {label:"免震・防音・セキュリティ・建材",items:[
+         {nm:"オイレス工業",tk:"6282",c:"m"},{nm:"日創グループ",tk:"3440",c:"h"},
+         {nm:"オプテックスグループ",tk:"6914",c:"h"},{nm:"ヤマックス",tk:"5285",c:"h"}]}
+     ]},
+    {num:"05",accent:"cyan",kick:"半導体",title:"計算する“頭脳”をつくる",
+     lead:"AIの中身はGPUやメモリ（HBM）などの半導体。チップ本体は台湾・韓国が強い一方、日本は「製造装置」と「材料」で世界的なシェアを握ります。",
+     why:"AI半導体の増産で、製造装置・材料の需要が構造的に拡大。",
+     groups:[
+       {label:"メモリ・受託製造",items:[
+         {nm:"キオクシアHD",tk:"285A",c:"h"},{nm:"ラピダス",tk:"非上場",c:"l",priv:1}]},
+       {label:"製造装置",items:[
+         {nm:"東京エレクトロン",tk:"8035",c:"h"},{nm:"ディスコ",tk:"6146",c:"h"},
+         {nm:"SCREENホールディングス",tk:"7735",c:"l"}]},
+       {label:"材料・シリコンウエハ",items:[
+         {nm:"SUMCO",tk:"3436",c:"m"},{nm:"信越化学工業",tk:"4063",c:"m"},
+         {nm:"レゾナック",tk:"4004",c:"h"}]}
+     ]}
+  ];
+
+  const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+  const chip=i=>`<div class="chip"><span class="conf conf--${i.c}" title="確度"></span><span class="nm">${esc(i.nm)}</span><span class="tk${i.priv?' priv':''}">${esc(i.tk)}</span></div>`;
+  const group=g=>`<div class="group"><p class="group__label">${esc(g.label)}${g.note?`<span class="group__note">${esc(g.note)}</span>`:""}</p><div class="chips">${g.items.map(chip).join("")}</div></div>`;
+  const stage=s=>`<section class="stage" data-accent="${s.accent}">
+    <div class="node">${s.num}</div>
+    <div class="stage__head">
+      <p class="kick">${esc(s.kick)}</p>
+      <h2>${esc(s.title)}</h2>
+      <p class="lead">${esc(s.lead)}</p>
+      <div class="why"><span class="lab">なぜ伸びる</span><span>${esc(s.why)}</span></div>
+    </div>
+    ${s.groups.map(group).join("")}
+  </section>`;
+  document.getElementById("chain").innerHTML=STAGES.map(stage).join("");
+</script>
