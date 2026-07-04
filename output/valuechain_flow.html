@@ -45,13 +45,21 @@
   .flowcap .mid::after{content:"▶";position:absolute;right:-2px;top:50%;transform:translateY(-50%);color:var(--red);font-size:.8rem}
 
   /* ---- horizontal chevron flow ---- */
-  .flow{display:grid;grid-template-columns:1.1fr repeat(5,1.55fr) 1.1fr;gap:7px;align-items:stretch}
+  .flow{display:grid;grid-template-columns:1.0fr repeat(5,1.5fr) 1.85fr;gap:7px;align-items:stretch}
   .cap{border-radius:12px;padding:16px 12px;display:flex;flex-direction:column;justify-content:center;text-align:center;box-shadow:var(--shadow)}
   .cap--start{background:var(--char);color:#fff}
-  .cap--end{background:var(--ink);color:#fff}
   .cap .cl{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:6px}
   .cap .ct{font-size:.92rem;font-weight:800;line-height:1.35}
   .cap .cs{font-size:.72rem;opacity:.85;margin-top:5px;line-height:1.4}
+  /* 最終工程列（SEG017: DC構築・IT基盤SI／DC運営 → 稼働）*/
+  .endcol{background:var(--ink);color:#fff;border-radius:12px;padding:14px 14px 15px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);text-align:left}
+  .endcol .el{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#c7cfdb}
+  .endcol .et{font-size:.98rem;font-weight:800;line-height:1.3}
+  .endcol .esub{font-size:.72rem;color:#9aa6b6;margin-top:-3px}
+  .endcol .ecl{font-family:var(--mono);font-size:.6rem;color:#9aa6b6;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+  .endcol .eco{font-size:.78rem;font-weight:700;color:#eaeef4;line-height:1.4}
+  .endcol .enote{font-family:var(--mono);font-size:.64rem;color:#c7cfdb;font-weight:700;border-top:1px solid #2a3852;padding-top:8px;margin-top:auto}
+  .endcol .ego{font-size:.98rem;font-weight:800;color:#fff;margin-top:2px}
 
   .stage{display:flex;flex-direction:column;gap:8px;min-width:0}
   .chev{position:relative;background:var(--red);color:#fff;padding:13px 14px 13px 26px;min-height:74px;display:flex;flex-direction:column;justify-content:center;
@@ -127,7 +135,7 @@
   <div class="flow" id="flow"></div>
 
   <div class="foundation">
-    <div class="found__label"><span class="fn">06</span><b>部品・材料・ガス</b><span class="sub">全体を支える基盤層</span></div>
+    <div class="found__label"><span class="fn">SUPPORT</span><b>部品・材料・ガス</b><span class="sub">全段階を下から支える層</span></div>
     <div class="found__groups">
       <div class="fg"><span class="fgl">装置部品・サブシステム</span><span class="fgc">SMC・堀場製作所・アドバンテスト・日本ピラー工業・ダイフク</span></div>
       <div class="fg"><span class="fgl">電子部品・パッケージ基板</span><span class="fgc">村田製作所・太陽誘電・TDK・イビデン・新光電気工業</span></div>
@@ -142,12 +150,11 @@
     <span class="lg"><span class="sw ab"></span>A / B 両取り</span>
   </div>
 
-  <p class="note"><b>見方：</b>上段の矢羽根（01〜05）が「AI需要が生む価値の流れ」、下段の帯（06）が、その全段階を下から支える<b style="color:var(--ink)">部品・材料・ガス</b>の基盤層です。SMCのような装置部品や、村田製作所のような電子部品、特殊ガスも、AIサーバー・AI半導体の需要増で構造的に拡大します。各カードは代表的な国内プレーヤーと、ANDPADの現場管理が刺さる入り方（<span style="color:var(--char);font-weight:700">A発注者</span>／<span style="color:var(--red-dk);font-weight:700">B請負</span>）を示しています。掲載は代表企業（全145社の一部）。<span style="font-family:var(--mono)">作成 2026-07</span></p>
+  <p class="note"><b>見方：</b>上段の矢羽根（01〜05）が「AI需要が生む価値の流れ」。右端の<b style="color:var(--ink)">最終工程（DC構築・IT基盤SI／DC運営）</b>が、完成した箱にIT機器を搬入・据付・構築して"稼働"に変える橋渡し役（さくら・IIJ・CTC・兼松エレ 等）。下段の帯（SUPPORT）は、全段階を下から支える<b style="color:var(--ink)">部品・材料・ガス</b>の層で、SMCのような装置部品や村田製作所のような電子部品、特殊ガスも、AIサーバー・AI半導体の需要増で構造的に拡大します。各カードは代表的な国内プレーヤーと、ANDPADの現場管理が刺さる入り方（<span style="color:var(--char);font-weight:700">A発注者</span>／<span style="color:var(--red-dk);font-weight:700">B請負</span>）を示します。掲載は代表企業（全153社の一部）。<span style="font-family:var(--mono)">作成 2026-07</span></p>
 </div>
 
 <script>
   const START={cl:"TRIGGER",ct:"AI需要の拡大",cs:"生成AI・データセンター建設ラッシュ"};
-  const END={cl:"VALUE",ct:"AIサービス稼働",cs:"データセンターが動き、価値が実現"};
   const STAGES=[
     {no:"01",nm:"発電・電源",sb:"電気をつくる",tag:"B",role:"B 据付・保守",
      desc:"AIの計算に不可欠な電力。ガスタービン・非常用発電機が最上流。",
@@ -184,6 +191,20 @@
         <div class="chips">${s.chips.map(chip).join("")}</div>
       </div>
     </div>`;
+  const endCol=`<div class="endcol">
+      <div>
+        <div class="el">最終工程</div>
+        <div class="et">DC構築・IT基盤SI</div>
+        <div class="esub">／DC運営 — 箱の中身を構築し“稼働”へ</div>
+      </div>
+      <div>
+        <div class="ecl">代表企業（国内）</div>
+        <div class="eco">さくら・IIJ・NTTデータ・CTC・兼松エレ・NECネッツ</div>
+      </div>
+      <div class="enote">A 発注者（運営）＋ B 請負（構築）
+        <div class="ego">→ AIサービス稼働</div>
+      </div>
+    </div>`;
   document.getElementById("flow").innerHTML =
-    cap(START,"cap--start") + STAGES.map(stage).join("") + cap(END,"cap--end");
+    cap(START,"cap--start") + STAGES.map(stage).join("") + endCol;
 </script>

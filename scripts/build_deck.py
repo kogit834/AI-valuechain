@@ -154,12 +154,24 @@ text(s, 0.85, fy, 1.02, fh,
      [[R("起点", 8, RGBColor(0xD7,0xDB,0xE0), True, FONT_M, 1)],
       [R("AI需要", 12, WHITE, True)], [R("の拡大", 9.5, WHITE, True)]],
      align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=0, line_spacing=1.0)
-# end cap（価値実現）
-rect(s, 10.66, fy, 1.82, fh, fill=INK, radius=0.06)
-text(s, 10.66, fy, 1.82, fh,
-     [[R("価値実現", 8, RGBColor(0xC7,0xCF,0xDB), True, FONT_M, 1)],
-      [R("AIサービス", 12.5, WHITE, True)], [R("稼働", 10, WHITE, True)]],
-     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=0, line_spacing=1.0)
+# 最終列（SEG017）: DC構築・IT基盤SI／DC運営 → 稼働
+ecx, ecy, ecw, ech = 10.66, fy, 1.82, 4.05
+rect(s, ecx, ecy, ecw, ech, fill=INK, radius=0.05)
+text(s, ecx+0.14, ecy+0.14, ecw-0.28, 0.9,
+     [[R("最終工程", 7.5, RGBColor(0xC7,0xCF,0xDB), True, FONT_M, 1)],
+      [R("DC構築・IT基盤SI", 10.5, WHITE, True)],
+      [R("／DC運営", 8.5, RGBColor(0xC7,0xCF,0xDB), False)]],
+     anchor=MSO_ANCHOR.TOP, space_after=1, line_spacing=1.05)
+text(s, ecx+0.14, ecy+1.05, ecw-0.28, 0.24, [[R("箱の中身を構築し“稼働”へ", 7.5, RGBColor(0x9A,0xA6,0xB6), False)]])
+text(s, ecx+0.14, ecy+1.32, ecw-0.28, 1.35,
+     [[R("代表企業", 7, RGBColor(0x9A,0xA6,0xB6), True, FONT_M)],
+      [R("さくら・IIJ・NTTデータ・CTC・兼松エレ・NECネッツ", 8.5, RGBColor(0xEA,0xEE,0xF4), True)]],
+     space_after=2, line_spacing=1.2)
+rect(s, ecx+0.14, ecy+2.85, ecw-0.28, 0.012, fill=RGBColor(0x33,0x42,0x5A))
+text(s, ecx+0.14, ecy+2.95, ecw-0.28, 0.24, [[R("A 発注者（運営）＋ B 請負（構築）", 7.5, RGBColor(0xC7,0xCF,0xDB), True, FONT_M)]])
+text(s, ecx+0.14, ecy+3.35, ecw-0.28, 0.55,
+     [[R("→ AIサービス", 11.5, WHITE, True)], [R("稼働", 9.5, WHITE, True)]],
+     space_after=0, line_spacing=1.0)
 
 for i, (no, nm, sb, tag, sv, ss, chips, desc) in enumerate(flow):
     cx = col0 + i * cw
@@ -198,9 +210,9 @@ rect(s, 0.85, foy, 11.63, foh, fill=REDWA, line=REDBD, line_w=1.2, radius=0.05)
 # 上向きの支持を示す帯（左端に赤タイル）
 rect(s, 0.85, foy, 1.9, foh, fill=RED, radius=0.05)
 text(s, 0.95, foy, 1.72, foh,
-     [[R("06", 12, RGBColor(0xFF,0xC9,0xCE), True, FONT_M, 1)],
+     [[R("SUPPORT", 7.5, RGBColor(0xFF,0xC9,0xCE), True, FONT_M, 1.5)],
       [R("部品・材料・ガス", 11, WHITE, True)],
-      [R("全体を支える基盤層", 8, RGBColor(0xFF,0xE2,0xE5), False)]],
+      [R("全段階を下から支える層", 8, RGBColor(0xFF,0xE2,0xE5), False)]],
      align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=1, line_spacing=1.02)
 found = [
     ("装置部品・サブシステム", "SMC・堀場製作所・アドバンテスト・日本ピラー・ダイフク"),
@@ -530,6 +542,17 @@ detail_slide("参", "領域06b ・ 電子部品・パッケージ基板・産業
     ("日本酸素HD", "4091", "産業ガス国内首位・特殊ガス世界3強。AI半導体増産で特殊ガス供給が堅調、増収増益。", "中"),
     ("関東電化工業", "4047", "半導体エッチング用の含フッ素特殊ガスが主力。AI半導体増産で経常利益+47.1%、27/3期も拡大。", "中"),
     ("トリケミカル研究所", "4369", "High-k等の超高純度前駆体材料で高シェア。生成AI需要で売上+37.4%・営業+30.2%。", "高"),
+])
+
+detail_slide("参", "領域07 ・ DC構築・ITインフラSI／DC運営", "箱の中身を構築し“稼働”へ — 建屋完成〜サービス稼働の橋渡し", "AB", [
+    ("さくらインターネット", "3778", "生成AI向けGPU基盤拡大で石狩DCを拡張・液冷導入、NVIDIA Blackwell搭載。設備投資668億円（発注者）。", "高"),
+    ("インターネットイニシアティブ", "3774", "白井DCキャンパス3期棟（約1,000ラック・約300億円）を増設、水冷Readyで26年度運用開始（発注者）。", "高"),
+    ("NTTデータグループ", "9613", "DCをAI中核インフラと位置づけ2030年度に3GW超へ。外部ファンドと共同出資で投資を上積み（発注者）。", "高"),
+    ("伊藤忠テクノソリューションズ", "4739", "クラウド・GPU基盤サービスが牽引し26/3期は売上7,937億円+9%・営業+19%（発注者＋構築請負）。", "高"),
+    ("兼松エレクトロニクス", "8096", "NW機器・生成AI機器とDCインフラ構築需要で3期ぶり増収増益（売上1,073億+9.7%・営業+37.2%／請負）。", "高"),
+    ("アイネット", "9600", "横浜の新DC「inet annex」を26年1月開所、DC・クラウド事業で増収増益を継続（発注者）。", "中"),
+    ("NECネッツエスアイ", "非上場", "企業のAIインフラ（NW・セキュリティ・計算基盤）の設計・構築をCisco連携で提供（構築請負）。", "中"),
+    ("NTTファシリティーズ", "非上場", "高発熱GPUサーバー対応のDC冷却（液冷・チラーレス）の設計・施工力を強化（構築請負）。", "中"),
 ])
 
 out = Path(__file__).resolve().parent.parent / "output" / "andpad_ai_opportunity_deck.pptx"
