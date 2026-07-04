@@ -132,19 +132,19 @@ header(s, "1", "電気をつくる川上から、計算する半導体の川下�
 #  no, 段階名, 一言, tag, 数値, 出典, [代表企業], desc
 flow = [
     ("01", "発電・電源", "電気をつくる", "B", "受注残 5兆円超", "三菱重工",
-     "三菱重工・IHI・川崎重工・ヤンマー・デンヨー", "電力が全ての起点。ガスタービンや非常用発電機の需要が急増。"),
+     "三菱重工・IHI・ヤンマー・デンヨー", "電力が全ての起点。発電機・非常用電源が急増。"),
     ("02", "送変電・電線", "電気を送る・変える", "AB", "変圧器 生産能力2倍", "ダイヘン・東芝ES",
-     "日立・三菱電機・ダイヘン・フジクラ・電力4社", "高電圧で送りDC向けに変換。変圧器は世界的に品薄で受注は数年先まで。"),
+     "日立・三菱電機・ダイヘン・フジクラ", "変圧器でDC向けに変換。品薄で受注は数年先。"),
     ("03", "DC建設・設備工事", "箱を建てる", "B", "空調工事 受注 +25.5%", "ダイダン",
-     "鹿島・大林・きんでん・関電工・高砂熱学", "巨大な建屋を建設。電気・空調のサブコンが主役で、営業の本命。"),
+     "鹿島・大林・きんでん・高砂熱学", "巨大な建屋を建設。設備工事が営業の本命。"),
     ("04", "冷却・電源保護", "冷やす・止めない", "B", "北米DC冷却 約13倍", "ダイキン",
-     "ダイキン・GSユアサ・オイレス・エア・ウォーター", "液冷で冷やし、UPSで止めない。据付・保守が伴う機器の宝庫。"),
+     "ダイキン・GSユアサ・オイレス", "液冷で冷やしUPSで止めない。据付・保守の宝庫。"),
     ("05", "半導体", "計算する頭脳", "AB", "設備投資 +66%", "キオクシア",
-     "東京エレクトロン・ディスコ・信越化学・キオクシア", "AIチップ本体は海外勢が強いが、装置・材料で日本が世界的シェア。"),
+     "東京ｴﾚｸﾄﾛﾝ・ディスコ・信越化学", "チップは海外勢。装置・材料で日本が強い。"),
 ]
 
-fy, fh = 1.5, 0.98         # chevron band
-by, bh = 2.66, 3.84        # body cards
+fy, fh = 1.45, 0.9         # chevron band
+by, bh = 2.5, 3.02         # body cards
 col0 = 2.02
 cw = (10.62 - col0) / 5    # 5 columns
 
@@ -178,32 +178,53 @@ for i, (no, nm, sb, tag, sv, ss, chips, desc) in enumerate(flow):
     rect(s, bx, by, bw, bh, fill=WHITE, line=LINE, line_w=1, radius=0.045)
     tagtxt = {"A": "A 発注者", "B": "B 請負", "AB": "A＋B 両取り"}[tag]
     tagcol = CHAR if tag == "A" else RED
-    pad = 0.14
+    pad = 0.13
     # tag + 一言
-    text(s, bx+pad, by+0.14, bw-2*pad, 0.24, [[R(tagtxt, 8.5, tagcol, True, FONT_M)]])
-    text(s, bx+pad, by+0.42, bw-2*pad, 0.3, [[R(sb, 11.5, INK, True)]])
+    text(s, bx+pad, by+0.11, bw-2*pad, 0.22, [[R(tagtxt, 8.5, tagcol, True, FONT_M)]])
+    text(s, bx+pad, by+0.35, bw-2*pad, 0.28, [[R(sb, 11, INK, True)]])
     # desc
-    text(s, bx+pad, by+0.82, bw-2*pad, 1.0, [[R(desc, 8.8, BODY)]], line_spacing=1.16)
+    text(s, bx+pad, by+0.68, bw-2*pad, 0.66, [[R(desc, 8.5, BODY)]], line_spacing=1.12)
     # stat block
-    rect(s, bx+pad, by+1.86, bw-2*pad, 0.01, fill=REDBD)
-    text(s, bx+pad, by+1.96, bw-2*pad, 0.66,
-         [[R(sv, 12, RED, True)], [R(ss, 7.5, MUTE, False, FONT_M)]], space_after=0, line_spacing=1.06)
+    rect(s, bx+pad, by+1.4, bw-2*pad, 0.01, fill=REDBD)
+    text(s, bx+pad, by+1.48, bw-2*pad, 0.58,
+         [[R(sv, 11.5, RED, True)], [R(ss, 7, MUTE, False, FONT_M)]], space_after=0, line_spacing=1.04)
     # companies
-    text(s, bx+pad, by+2.72, bw-2*pad, 0.22, [[R("代表企業（国内）", 7.5, MUTE, True, FONT_M)]])
-    text(s, bx+pad, by+2.96, bw-2*pad, 0.82, [[R(chips, 9, INK, True)]], line_spacing=1.22)
+    text(s, bx+pad, by+2.1, bw-2*pad, 0.2, [[R("代表企業（国内）", 7, MUTE, True, FONT_M)]])
+    text(s, bx+pad, by+2.3, bw-2*pad, 0.66, [[R(chips, 8.8, INK, True)]], line_spacing=1.18)
+
+# ---- 06 基盤層（全体を下から支える部品・材料・ガス）----
+foy, foh = 5.66, 1.06
+rect(s, 0.85, foy, 11.63, foh, fill=REDWA, line=REDBD, line_w=1.2, radius=0.05)
+# 上向きの支持を示す帯（左端に赤タイル）
+rect(s, 0.85, foy, 1.9, foh, fill=RED, radius=0.05)
+text(s, 0.95, foy, 1.72, foh,
+     [[R("06", 12, RGBColor(0xFF,0xC9,0xCE), True, FONT_M, 1)],
+      [R("部品・材料・ガス", 11, WHITE, True)],
+      [R("全体を支える基盤層", 8, RGBColor(0xFF,0xE2,0xE5), False)]],
+     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=1, line_spacing=1.02)
+found = [
+    ("装置部品・サブシステム", "SMC・堀場製作所・アドバンテスト・日本ピラー・ダイフク"),
+    ("電子部品・パッケージ基板", "村田製作所・太陽誘電・TDK・イビデン・新光電気"),
+    ("産業/特殊ガス・前駆体材料", "日本酸素HD・関東電化工業・トリケミカル研究所"),
+]
+gx0, gw = 2.95, (12.4 - 2.95) / 3
+for i, (glab, gco) in enumerate(found):
+    gx = gx0 + i * gw
+    if i > 0:
+        rect(s, gx-0.04, foy+0.16, 0.012, foh-0.32, fill=REDBD)
+    text(s, gx+0.04, foy+0.13, gw-0.16, foh-0.26,
+         [[R(glab, 8.5, RED, True, FONT_M)],
+          [R(gco, 9.5, INK, True)]], space_after=2, line_spacing=1.18)
 
 # legend
-rect(s, 0.85, 6.55, 11.63, 0.5, fill=PANEL, line=LINE, line_w=1, radius=0.06)
-text(s, 1.1, 6.55, 11.2, 0.5,
-     [[R("現場管理の入り方：", 10, MUTE, True, FONT_M),
-       R(" A 発注者＝自社の設備投資を建てる側で管理", 10.5, CHAR, True),
-       R("　／　", 10, MUTE, False),
-       R("B 請負＝据付・試運転・保守を納める側で管理", 10.5, RED, True),
-       R("　※各段階は代表企業のみ", 9, MUTE, False)]],
+rect(s, 0.85, 6.86, 11.63, 0.44, fill=PANEL, line=LINE, line_w=1, radius=0.06)
+text(s, 1.1, 6.86, 11.2, 0.44,
+     [[R("現場管理の入り方：", 9.5, MUTE, True, FONT_M),
+       R(" A 発注者＝自社の設備投資を建てる側で管理", 10, CHAR, True),
+       R("　／　", 9.5, MUTE, False),
+       R("B 請負＝据付・試運転・保守を納める側で管理", 10, RED, True),
+       R("　※各段階は代表企業のみ", 8.5, MUTE, False)]],
      anchor=MSO_ANCHOR.MIDDLE)
-text(s, 0.9, 7.12, 11.5, 0.28,
-     [[R("さらに川下へ波及：", 9, RED, True, FONT_M),
-       R("半導体製造装置の部品（SMC・堀場・アドバンテスト等）／電子部品・パッケージ基板（村田・イビデン等）／産業ガスにも拡大 → 付録参照", 9, BODY)]])
 
 # =========================================================
 # SLIDE 3 — なぜ今

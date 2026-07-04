@@ -82,6 +82,19 @@
   .support .sw.a{background:var(--char)} .support .sw.b{background:var(--red)}
   .support .sw.ab{background:linear-gradient(90deg,var(--char) 50%,var(--red) 50%)}
 
+  /* 06 foundation band（全体を支える基盤層） */
+  .foundation{margin-top:9px;display:grid;grid-template-columns:auto 1fr;gap:0;border:1.5px solid var(--redbd);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  .found__label{background:var(--red);color:#fff;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;text-align:center;min-width:150px}
+  .found__label .fn{font-family:var(--mono);font-size:.7rem;font-weight:700;letter-spacing:.14em;opacity:.85}
+  .found__label b{font-size:1rem;line-height:1.3;margin-top:2px}
+  .found__label span.sub{font-size:.68rem;opacity:.9;margin-top:3px}
+  .found__groups{background:var(--redwa);display:grid;grid-template-columns:repeat(3,1fr)}
+  .fg{padding:12px 15px;border-left:1px solid var(--redbd)}
+  .fg:first-child{border-left:none}
+  .fgl{display:block;font-family:var(--mono);font-size:.66rem;font-weight:700;color:var(--red-dk);letter-spacing:.02em;margin-bottom:4px}
+  .fgc{font-size:.82rem;font-weight:700;color:var(--ink);line-height:1.4}
+  @media (max-width:720px){.foundation{grid-template-columns:1fr}.found__groups{grid-template-columns:1fr}.fg{border-left:none;border-top:1px solid var(--redbd)}.found__label{min-width:0}}
+
   .note{margin-top:20px;color:var(--mute);font-size:.82rem;line-height:1.7;border-top:1px solid var(--line);padding-top:16px}
   .note b{color:var(--body)}
 
@@ -113,6 +126,15 @@
 
   <div class="flow" id="flow"></div>
 
+  <div class="foundation">
+    <div class="found__label"><span class="fn">06</span><b>部品・材料・ガス</b><span class="sub">全体を支える基盤層</span></div>
+    <div class="found__groups">
+      <div class="fg"><span class="fgl">装置部品・サブシステム</span><span class="fgc">SMC・堀場製作所・アドバンテスト・日本ピラー工業・ダイフク</span></div>
+      <div class="fg"><span class="fgl">電子部品・パッケージ基板</span><span class="fgc">村田製作所・太陽誘電・TDK・イビデン・新光電気工業</span></div>
+      <div class="fg"><span class="fgl">産業/特殊ガス・前駆体材料</span><span class="fgc">日本酸素HD・関東電化工業・トリケミカル研究所</span></div>
+    </div>
+  </div>
+
   <div class="support">
     <span class="st">現場管理の入り方</span>
     <span class="lg"><span class="sw a"></span><b style="color:var(--char)">A 発注者</b>：自社の設備投資を、建てる側で管理</span>
@@ -120,8 +142,7 @@
     <span class="lg"><span class="sw ab"></span>A / B 両取り</span>
   </div>
 
-  <p class="note"><b>さらに川下へ波及：</b>この流れの先には、<b style="color:var(--ink)">半導体製造装置の部品・サブシステム</b>（SMC・堀場製作所・アドバンテスト・日本ピラー工業・ダイフク 等）、<b style="color:var(--ink)">電子部品・パッケージ基板</b>（村田製作所・太陽誘電・TDK・イビデン 等）、<b style="color:var(--ink)">産業・特殊ガス／前駆体材料</b>（日本酸素HD・関東電化工業・トリケミカル研究所 等）も、AIサーバー・AI半導体の需要増で構造的に拡大します。</p>
-  <p class="note" style="border-top:none;padding-top:2px"><b>見方：</b>上段の矢羽根が「AI需要が生む価値の流れ」。各段階のカードに、代表的な国内プレーヤーと、ANDPADの現場管理が刺さる入り方を示しています。掲載は各段階の代表企業（全145社の一部）。数値・根拠は企業マスタ（valuechain_master.xlsx）と参考資料を参照。<span style="font-family:var(--mono)">作成 2026-07</span></p>
+  <p class="note"><b>見方：</b>上段の矢羽根（01〜05）が「AI需要が生む価値の流れ」、下段の帯（06）が、その全段階を下から支える<b style="color:var(--ink)">部品・材料・ガス</b>の基盤層です。SMCのような装置部品や、村田製作所のような電子部品、特殊ガスも、AIサーバー・AI半導体の需要増で構造的に拡大します。各カードは代表的な国内プレーヤーと、ANDPADの現場管理が刺さる入り方（<span style="color:var(--char);font-weight:700">A発注者</span>／<span style="color:var(--red-dk);font-weight:700">B請負</span>）を示しています。掲載は代表企業（全145社の一部）。<span style="font-family:var(--mono)">作成 2026-07</span></p>
 </div>
 
 <script>
