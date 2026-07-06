@@ -132,38 +132,48 @@ text(s, 0.86, 7.0, 11.4, 0.35,
 # SLIDE 2 — WHY：なぜ製造業がアツいのか（メカニズム）
 # =========================================================
 s = slide()
-header(s, "1", "AIブームは“クラウドの話”ではない。電気と鉄と現場の話だ。", "なぜ、いま製造業がアツいのか")
+header(s, "1", "世界が動く先には、必ず「設備」がいる。その主役は、製造業だ。",
+       "世界のメガトレンドと、その“共通の土台”")
 
-steps = [
-    ("きっかけ", "AIは“電気と設備の塊”", "DC（データセンター）1棟で数万世帯分の電力。膨大な発電・変圧器・冷却・半導体が要る。"),
-    ("連鎖", "製造業が一斉に動き出す", "重電・電線・空調・UPS・半導体——各社が工場を増設し、機器の製造・納入・据付が全国で立ち上がる。"),
-    ("結果", "“現場”が全国で急増する", "工場を建てる現場も、機器を据え付け・試運転・保守する現場も、同時多発で増えていく。"),
+trends = [
+    (RED,  "① AI", "本日フォーカス", "生成AI・データセンター・半導体",
+     "→ 電源・冷却・建屋・チップ工場が大量に要る"),
+    (CHAR, "② 脱炭素（GX）", "", "再エネ・送電網・電化・蓄電池",
+     "→ 発電・変電・ケーブル・電池／EV工場"),
+    (CHAR, "③ 経済安保・国内回帰", "", "半導体・重要物資の国産化",
+     "→ 国内に工場を新設し、供給網を再構築"),
 ]
-cx, cw, gap, cy, ch = 0.85, 3.75, 0.30, 1.62, 1.95
-for i, (k, h, b) in enumerate(steps):
-    x = cx + i * (cw + gap)
-    rect(s, x, cy, cw, ch, fill=WHITE, line=REDBD, line_w=1.2, radius=0.06)
-    rect(s, x, cy, cw, 0.10, fill=RED, radius=0.0)
-    text(s, x+0.28, cy+0.28, cw-0.56, ch-0.4,
-         [[R(k, 10.5, RED, True, FONT_M, 1)],
-          [R(h, 16, INK, True)],
-          [R(b, 11.5, BODY)]], space_after=7, line_spacing=1.16)
-    if i < 2:
-        text(s, x+cw-0.03, cy+0.55, 0.36, 0.6, [[R("→", 22, RED, True, FONT_M)]], align=PP_ALIGN.CENTER)
+tcw, tpitch, tcy, tch = 3.75, 3.94, 1.55, 2.15
+for i, (col, nm, tag, what, need) in enumerate(trends):
+    x = 0.85 + i * tpitch
+    hot = (col == RED)
+    rect(s, x, tcy, tcw, tch, fill=WHITE, line=(REDBD if hot else LINE),
+         line_w=(1.6 if hot else 1), radius=0.06)
+    rect(s, x, tcy, tcw, 0.56, fill=col, radius=0.0)
+    text(s, x+0.22, tcy, tcw-0.4, 0.56, [[R(nm, 14.5, WHITE, True)]], anchor=MSO_ANCHOR.MIDDLE)
+    if tag:
+        rect(s, x+tcw-1.42, tcy+0.145, 1.24, 0.27, fill=WHITE, radius=0.4)
+        text(s, x+tcw-1.42, tcy+0.145, 1.24, 0.27, [[R(tag, 8.5, RED, True, FONT_M)]],
+             align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    text(s, x+0.24, tcy+0.74, tcw-0.48, 0.55, [[R(what, 13.5, INK, True)]], line_spacing=1.14)
+    text(s, x+0.24, tcy+1.42, tcw-0.48, 0.6, [[R(need, 11.5, (RED if hot else BODY), hot)]],
+         line_spacing=1.16)
 
 rect(s, 0.85, 3.95, 11.63, 1.35, fill=CHARWA, line=CHAR, line_w=1.2, radius=0.05)
-text(s, 1.15, 4.18, 11.0, 0.5,
-     [[R("いま製造業は、建設業のように", 17, INK, True),
-       R("“現場だらけ”", 17, RED, True), R("になっている。", 17, INK, True)]])
-text(s, 1.15, 4.78, 11.0, 0.45,
-     [[R("＝ 我々が建設業で磨いた「現場管理」が、そのまま効く土俵が、製造業に新しく生まれている。", 12.5, BODY)]])
+text(s, 1.15, 4.17, 11.0, 0.5,
+     [[R("どのメガトレンドも、実現するには", 16.5, INK, True),
+       R("膨大な“設備”", 16.5, RED, True), R("がいる。", 16.5, INK, True)]])
+text(s, 1.15, 4.72, 11.0, 0.5,
+     [[R("そして設備を作る・建てるのは——建設業だけでなく、", 13, BODY),
+       R("重電・機械・電機など製造業がコア。", 13, RED, True)]])
 
-rect(s, 0.85, 5.55, 11.63, 1.25, fill=REDWA, line=REDBD, line_w=1, radius=0.05)
-text(s, 1.15, 5.76, 11.0, 0.5,
-     [[R("しかもこれは、一過性のブームではない。", 15.5, INK, True)]])
-text(s, 1.15, 6.28, 11.0, 0.45,
-     [[R("各社の受注残・設備投資計画・売上ガイダンスに裏打ちされた、数年〜十数年続く", 12.5, BODY),
-       R("構造需要", 12.5, RED, True), R("だ。", 12.5, BODY)]])
+rect(s, 0.85, 5.5, 11.63, 1.3, fill=RED, radius=0.05)
+text(s, 1.15, 5.68, 11.0, 0.5,
+     [[R("この“設備”の市場が、いま圧倒的に広がっている。乗らない手はない。", 16.5, WHITE, True)]])
+text(s, 1.15, 6.24, 11.0, 0.5,
+     [[R("→ 今日はその中で、最も勢いのある「", 13.5, RGBColor(0xFF,0xD2,0xD7), True),
+       R("AI", 13.5, WHITE, True),
+       R("」にフォーカスして話す。", 13.5, RGBColor(0xFF,0xD2,0xD7), True)]])
 
 # =========================================================
 # SLIDE 3 — トレンド：これまでの何倍か（横軸に年）
