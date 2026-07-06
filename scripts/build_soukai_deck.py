@@ -14,6 +14,7 @@ from pathlib import Path
 # ---- palette ----
 RED   = RGBColor(0xE6,0x00,0x12)
 RED2  = RGBColor(0xF0,0x66,0x70)   # 淡い赤（同系2トーン）
+PINK  = RGBColor(0xFF,0xCF,0xD3)   # 赤地の上の小ラベル用
 INK   = RGBColor(0x15,0x18,0x1C)
 SUB   = RGBColor(0x37,0x3C,0x43)
 MUTE  = RGBColor(0x6E,0x76,0x7F)
@@ -127,32 +128,53 @@ s = slide()
 header(s, "01", "世界のメガトレンドと、その“共通の土台”",
        "世界が動く先には、必ず「設備」がいる。その主役は、製造業だ。")
 
+text(s, LM-0.02, 1.72, CW, 0.3,
+     [[R("いま世界を動かす3つのメガトレンド。どれも、実現するには物理的な“設備”が要る。", 13.5, MUTE, True)]])
+
 cols = [
-    ("01", "AI", True,  "生成AI・データセンター・半導体", "電源・冷却・建屋・チップ工場が大量に要る"),
+    ("01", "AI", True,  "生成AI・データセンター・半導体", "電源・冷却・建屋・チップ工場"),
     ("02", "脱炭素（GX）", False, "再エネ・送電網・電化・蓄電池", "発電・変電・ケーブル・電池／EV工場"),
-    ("03", "経済安保・国内回帰", False, "半導体・重要物資の国産化", "国内に工場を新設し、供給網を再構築"),
+    ("03", "経済安保・国内回帰", False, "半導体・重要物資の国産化", "国内に工場を新設・供給網を再構築"),
 ]
 pitch = CW / 3
-ctop = 1.98
+ctop = 2.24
 for i, (no, nm, hot, what, need) in enumerate(cols):
     x = LM + i * pitch
+    w = pitch - 0.44
     if i > 0:
-        vrule(s, x-0.24, ctop+0.05, 2.25, wt=1.2)
-    text(s, x, ctop, pitch-0.5, 0.26, [[R(no, 11, FAINT, True, FONT_M, 1)]])
-    text(s, x, ctop+0.32, pitch-0.42, 0.5, [[R(nm, 23, (RED if hot else INK), True)]])
+        vrule(s, x-0.24, ctop+0.02, 1.98, wt=1.0)
+    box(s, x, ctop, w, 0.07, RED if hot else G_DK)
+    text(s, x, ctop+0.22, w, 0.24, [[R(no, 11, FAINT, True, FONT_M, 1)]])
     if hot:
-        text(s, x, ctop+0.9, pitch-0.4, 0.26, [[R("●  本日フォーカス", 11, RED, True, FONT_M)]])
-    text(s, x, ctop+1.34, pitch-0.5, 0.44, [[R(what, 14.5, MUTE, True)]], line_spacing=1.18)
-    text(s, x, ctop+1.82, pitch-0.5, 0.55, [[R("→ ", 14.5, RED, True), R(need, 14.5, SUB)]], line_spacing=1.22)
+        text(s, x, ctop+0.2, w, 0.24, [[R("● 本日フォーカス", 10, RED, True, FONT_M)]],
+             align=PP_ALIGN.RIGHT)
+    text(s, x, ctop+0.5, w, 0.5, [[R(nm, 22, (RED if hot else INK), True)]])
+    text(s, x, ctop+1.06, w, 0.3, [[R(what, 13, MUTE, True)]], line_spacing=1.16)
+    text(s, x, ctop+1.44, w, 0.6,
+         [[R("要る設備", 9.5, FAINT, True, FONT_M, 1)],
+          [R("→ ", 13.5, RED, True), R(need, 13.5, SUB, True)]],
+         line_spacing=1.2, space_after=2)
 
-hrule(s, LM, 4.6, CW)
-text(s, LM-0.02, 4.85, 11.7, 0.5,
-     [[R("どのメガトレンドも、実現するには", 19, INK, True),
-       R("膨大な“設備”", 19, RED, True), R("がいる。", 19, INK, True)]])
-text(s, LM-0.02, 5.5, 11.7, 0.5,
-     [[R("設備を作る・建てるのは、建設業だけではない——", 15.5, SUB),
-       R("重電・機械・電機など製造業がコア。", 15.5, INK, True)]])
-takeaway(s, 6.25,
+# 3列 → ひとつの土台へ収束（▼）
+for i in range(3):
+    x = LM + i * pitch
+    text(s, x, 4.34, pitch-0.44, 0.3, [[R("▼", 13, RED, True)]], align=PP_ALIGN.CENTER)
+
+# 収束先：赤の全幅バンド（P5と同系の“塗り”でメッセージを運ぶ）
+by, bh = 4.66, 1.12
+box(s, LM, by, CW, bh, RED)
+split = CW * 0.46
+box(s, LM+split-0.01, by+0.18, 0.02, bh-0.36, WHITE)
+text(s, LM+0.42, by, split-0.6, bh,
+     [[R("3つに共通する“土台”", 10.5, PINK, True, FONT_M, 1)],
+      [R("膨大な“設備”がいる。", 23, WHITE, True)]],
+     anchor=MSO_ANCHOR.MIDDLE, line_spacing=1.1, space_after=3)
+text(s, LM+split+0.5, by, CW-split-0.9, bh,
+     [[R("作る・建てる主役は", 10.5, PINK, True, FONT_M, 1)],
+      [R("重電・機械・電機など、“製造業”がコア。", 18, WHITE, True)]],
+     anchor=MSO_ANCHOR.MIDDLE, line_spacing=1.14, space_after=3)
+
+takeaway(s, 6.18,
          [[R("→ 今日はその中で、最も勢いのある「", 19, INK, True),
            R("AI", 19, RED, True), R("」に絞って話す。", 19, INK, True)]], h=0.62)
 
@@ -212,33 +234,44 @@ s = slide()
 header(s, "03", "AI需要 → 連鎖して伸びる、日本のバリューチェーン",
        "AIが伸びれば、この“川”がまるごと潤う。")
 
-text(s, LM, 1.9, 6.0, 0.34, [[R("AI・DC需要の拡大", 15, RED, True),
-     R("　この一手が、川下までまるごと波及する", 11, MUTE, True)]])
-box(s, LM, 2.4, CW, 0.045, RED)
+text(s, LM, 1.82, 8.5, 0.34, [[R("AI・DC需要の拡大", 15, RED, True),
+     R("　この一手が、川上から川下までまるごと波及する", 11, MUTE, True)]])
+# 川上 → 川下 の軸ラベル
+text(s, LM, 2.3, 4.0, 0.22, [[R("川上（源流）", 9.5, FAINT, True, FONT_M, 1)]])
+text(s, RM-4.0, 2.3, 4.0, 0.22, [[R("川下（据付・保守の現場）", 9.5, FAINT, True, FONT_M, 1)]],
+     align=PP_ALIGN.RIGHT)
+# “川”の流れ＝赤の全幅バー＋下流への矢尻
+box(s, LM, 2.56, CW-0.34, 0.05, RED)
+text(s, RM-0.36, 2.45, 0.4, 0.26, [[R("▶", 14, RED, True)]])
 
 stages = [
-    ("01", "発電・電源", ["三菱重工", "川崎重工", "IHI", "デンヨー"]),
-    ("02", "送変電・電線", ["日立", "三菱電機", "ダイヘン", "フジクラ"]),
-    ("03", "DC建設・設備", ["鹿島建設", "大林組", "きんでん", "高砂熱学"]),
-    ("04", "冷却・電源保護", ["ダイキン", "GSユアサ", "荏原製作所"]),
-    ("05", "半導体", ["東京エレクトロン", "ディスコ", "キオクシア", "信越化学"]),
+    ("01", "発電・電源", "電気をつくる", ["三菱重工", "川崎重工", "IHI", "デンヨー"]),
+    ("02", "送変電・電線", "送る・変える", ["日立", "三菱電機", "ダイヘン", "フジクラ"]),
+    ("03", "DC建設・設備", "箱を建てる", ["鹿島建設", "大林組", "きんでん", "高砂熱学"]),
+    ("04", "冷却・電源保護", "冷やす・止めない", ["ダイキン", "GSユアサ", "荏原製作所"]),
+    ("05", "半導体", "計算する頭脳", ["東京エレクトロン", "ディスコ", "キオクシア", "信越化学"]),
 ]
 spitch = CW / 5
-stop = 2.75
-for i, (no, stg, cos) in enumerate(stages):
+stop = 2.92
+for i, (no, stg, fn, cos) in enumerate(stages):
     x = LM + i * spitch
+    w = spitch - 0.28
     if i > 0:
-        vrule(s, x-0.12, stop, 2.55, wt=1.2)
-    text(s, x, stop, spitch-0.3, 0.22, [[R(no, 10, FAINT, True, FONT_M, 1)]])
-    text(s, x, stop+0.28, spitch-0.26, 0.5, [[R(stg, 14, INK, True)]], line_spacing=1.06)
+        vrule(s, x-0.12, stop, 2.6, wt=1.0)
+    box(s, x, stop, w, 0.06, RED)
+    text(s, x, stop+0.16, w, 0.22, [[R(no, 10, FAINT, True, FONT_M, 1)]])
+    text(s, x, stop+0.42, w, 0.4, [[R(stg, 14, INK, True)]], line_spacing=1.05)
+    text(s, x, stop+0.86, w, 0.24, [[R(fn, 10.5, MUTE, True)]])
     for j, co in enumerate(cos):
-        text(s, x, stop+0.9 + j*0.42, spitch-0.26, 0.34, [[R(co, 12, SUB, True)]])
+        text(s, x, stop+1.26 + j*0.40, w, 0.34,
+             [[R("・", 11, RED, True), R(co, 12.5, SUB, True)]])
 
-takeaway(s, 5.7,
+takeaway(s, 5.74,
          [[R("AIの“源流”が、川下の日本メーカーまで、", 19, INK, True),
-           R("まるごと潤す。", 19, RED, True)]], h=0.58)
-text(s, LM+0.28, 6.38, 11.3, 0.34, [[R("狙える現場は、この一社一社にある。", 14, SUB, True)]])
-text(s, LM, 6.92, 11.6, 0.28,
+           R("まるごと潤す。", 19, RED, True)]], h=0.56)
+text(s, LM+0.28, 6.4, 11.3, 0.34,
+     [[R("発電から半導体まで全段が同時に増収増益——狙える現場は、この一社一社にある。", 14, SUB, True)]])
+text(s, LM, 6.94, 11.6, 0.28,
      [[R("※ 各段階の代表企業を抜粋（社名表記＝ロゴのイメージ、実ロゴへ差し替え可）。数値・詳細は次頁以降。", 9, FAINT, False, FONT_M)]])
 
 # =========================================================
