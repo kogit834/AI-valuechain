@@ -1,5 +1,6 @@
-"""ANDPAD 本部総会 向けプレゼン資料（5分・全6枚）を生成する。
-テーマ: 建設SaaSの我々が、なぜいま製造業か。AI市場の規模と、我々の出番。
+"""ANDPAD 本部総会 向けプレゼン資料（5分・全7枚）を生成する。
+テーマ: 建設SaaSの我々が、なぜいま製造業か。AI市場の規模を“体感”に変え、
+        DC建設費の内訳（ゼネコン vs 製造業）から“周辺の広大な市場”を示す。
 配色: 白 × ANDPADレッド × グレー（既存デッキとトンマナ統一）。
 出力: output/andpad_soukai_ai_deck.pptx
 """
@@ -13,6 +14,7 @@ from pathlib import Path
 
 # ---- palette (white / red / grey) ----
 RED    = RGBColor(0xE6,0x00,0x12)   # ANDPAD red
+RED2   = RGBColor(0xF2,0x55,0x60)   # lighter red (2nd tone)
 REDWA  = RGBColor(0xFD,0xEC,0xEE)   # pink wash
 REDBD  = RGBColor(0xF3,0xC7,0xCD)   # pink border
 INK    = RGBColor(0x1A,0x1D,0x21)   # near-black heading
@@ -89,7 +91,7 @@ def header(s, tile, title, eyebrow=None):
          align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
     if eyebrow:
         text(s, 1.55, 0.5, 11.2, 0.28, [[R(eyebrow, 11, RED, True, FONT_M, 1.5)]])
-        text(s, 1.53, 0.74, 11.4, 0.5, [[R(title, 21, INK, True)]])
+        text(s, 1.53, 0.74, 11.4, 0.5, [[R(title, 20, INK, True)]])
     else:
         text(s, 1.55, 0.5, 11.2, 0.55, [[R(title, 23, INK, True)]],
              anchor=MSO_ANCHOR.MIDDLE)
@@ -119,7 +121,7 @@ text(s, 0.86, 4.45, 11.4, 0.7,
        R("に変えている。", 19, BODY, False)]])
 rect(s, 0.88, 5.5, 4.2, 0.03, fill=RED)
 text(s, 0.86, 5.7, 11.4, 0.95,
-     [[R("世界のAIマネーが、発電・変圧器・冷却・半導体の“設備投資と現場”になって日本に降ってくる。", 13.5, BODY)],
+     [[R("しかもお金の大半は、建物ではなく“電気・機械設備”＝製造業に流れる。据付・試運転・保守まで人が動き続ける。", 13.5, BODY)],
       [R("増える現場、足りない人手。その差を埋めるのが、我々ANDPADの現場管理だ。", 13.5, BODY)]],
      line_spacing=1.28)
 text(s, 0.86, 7.0, 11.4, 0.35,
@@ -148,16 +150,13 @@ for i, (k, h, b) in enumerate(steps):
     if i < 2:
         text(s, x+cw-0.03, cy+0.55, 0.36, 0.6, [[R("→", 22, RED, True, FONT_M)]], align=PP_ALIGN.CENTER)
 
-# 中段：建設業とのアナロジー
 rect(s, 0.85, 3.95, 11.63, 1.35, fill=CHARWA, line=CHAR, line_w=1.2, radius=0.05)
 text(s, 1.15, 4.18, 11.0, 0.5,
      [[R("いま製造業は、建設業のように", 17, INK, True),
-       R("“現場だらけ”", 17, RED, True),
-       R("になっている。", 17, INK, True)]])
+       R("“現場だらけ”", 17, RED, True), R("になっている。", 17, INK, True)]])
 text(s, 1.15, 4.78, 11.0, 0.45,
      [[R("＝ 我々が建設業で磨いた「現場管理」が、そのまま効く土俵が、製造業に新しく生まれている。", 12.5, BODY)]])
 
-# 下段：これは“思惑”ではない
 rect(s, 0.85, 5.55, 11.63, 1.25, fill=REDWA, line=REDBD, line_w=1, radius=0.05)
 text(s, 1.15, 5.76, 11.0, 0.5,
      [[R("しかもこれは、一過性のブームではない。", 15.5, INK, True)]])
@@ -166,103 +165,186 @@ text(s, 1.15, 6.28, 11.0, 0.45,
        R("構造需要", 12.5, RED, True), R("だ。", 12.5, BODY)]])
 
 # =========================================================
-# SLIDE 3 — HOW BIG（グローバル）：世界のAI投資の“規模”
+# SLIDE 3 — 規模を“体感”する（身近なものに換算）
 # =========================================================
 s = slide()
-header(s, "2", "AI投資は、桁が違う。国家予算級のマネーが動いている。", "① グローバル：AI市場の盛り上がりは、どれくらいの規模か")
+header(s, "2", "その金額、ピンとこない。だから“身近なもの”に換算する。", "AI投資の規模を、体感する")
 
-macro = [
-    ("約110兆円", "Big Tech 4社のAI投資（2026年・年間）",
-     "MS・Google・Amazon・Metaの設備投資合計 約7,250億ドル。前年比 +77%。ほぼ全額がAIインフラ。"),
-    ("約780兆円", "世界のAI DC投資（2030年までの累計）",
-     "生成AI対応DCへの設備投資は2030年までに約5.2兆ドル（総DC投資は約6.7兆ドル）に達する見込み（McKinsey）。"),
-    ("日本1国分", "世界のDC電力需要（2030年）",
-     "世界のデータセンター/AIの電力需要は2030年に約1兆kWh超へ。日本の年間電力消費に匹敵（IEA）。"),
+# 左：換算行  /  right column removed for full-width rows
+comp = [
+    ("110兆円", "／年", "Big Tech 4社のAI投資（'26）",
+     "日本の国家予算（115兆円）まるごと1年分。それを“毎年”、たった4社が。"),
+    ("780兆円", "累計", "世界のAI DC投資（〜'30・McKinsey）",
+     "日本のGDP（約600兆円）を超える規模。国家予算に換算すると 約7年分。"),
+    ("4.8兆円", "対日", "米クラウド大手の対日DC投資（〜'30）",
+     "大型DC（1棟 約300億円）を 150棟以上 建てられる額が、日本に落ちる。"),
+    ("13倍", "電力", "国内DC・半導体の最大電力（10年で）",
+     "56万→715万kW。増える分だけで 原発 約7基分 の新しい電気が要る（OCCTO）。"),
 ]
-mw = 11.63 / 3
-for i, (v, lab, b) in enumerate(macro):
-    x = 0.85 + i * mw
-    rect(s, x+0.06, 1.6, mw-0.12, 2.5, fill=WHITE, line=REDBD, line_w=1.3, radius=0.05)
-    rect(s, x+0.06, 1.6, mw-0.12, 0.11, fill=RED)
-    text(s, x+0.32, 1.9, mw-0.6, 0.9, [[R(v, 40, RED, True)]], anchor=MSO_ANCHOR.MIDDLE)
-    text(s, x+0.32, 2.86, mw-0.6, 0.5, [[R(lab, 12.5, INK, True)]], line_spacing=1.1)
-    text(s, x+0.32, 3.36, mw-0.62, 0.7, [[R(b, 9.8, BODY)]], line_spacing=1.16)
+ty, rh = 1.55, 1.14
+for i, (v, tag, lab, eq) in enumerate(comp):
+    y = ty + i * rh
+    if i % 2 == 1:
+        rect(s, 0.85, y, 11.63, rh-0.06, fill=PANEL, radius=0.04)
+    # left number block
+    rect(s, 0.95, y+0.12, 0.62, 0.6, fill=RED, radius=0.14)
+    text(s, 0.95, y+0.12, 0.62, 0.6, [[R(tag, 9, WHITE, True, FONT_M)]],
+         align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    text(s, 1.75, y+0.06, 3.3, 0.78, [[R(v, 34, RED, True)]], anchor=MSO_ANCHOR.MIDDLE)
+    text(s, 1.78, y+0.82, 3.3, 0.24, [[R(lab, 9.5, MUTE, True, FONT_M)]])
+    # equivalence
+    text(s, 5.2, y+0.06, 0.5, rh-0.2, [[R("≒", 22, CHAR, True, FONT_M)]],
+         align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    text(s, 5.85, y, 6.55, rh-0.06, [[R(eq, 15, INK, True)]],
+         anchor=MSO_ANCHOR.MIDDLE, line_spacing=1.18)
 
-# 解釈バンド
-rect(s, 0.85, 4.4, 11.63, 1.15, fill=CHARWA, line=CHAR, line_w=1.2, radius=0.05)
-text(s, 1.15, 4.6, 11.0, 0.5,
-     [[R("“AIが盛り上がっている”の正体は、", 16.5, INK, True),
-       R("電力・建物・機械への史上最大級の設備投資", 16.5, RED, True),
-       R("だ。", 16.5, INK, True)]])
-text(s, 1.15, 5.14, 11.0, 0.4,
-     [[R("ソフトウェアの話に見えて、その足元は徹底的に“物理”——発電所、変電所、建屋、冷却、半導体工場。", 12, BODY)]])
+rect(s, 0.85, 6.28, 11.63, 0.6, fill=RED, radius=0.05)
+text(s, 0.85, 6.28, 11.63, 0.6,
+     [[R("要するに——", 14, RGBColor(0xFF,0xCF,0xD4), True),
+       R("国家予算級のお金が、日本の“建設と設備の現場”に流れ込んでくる。", 15.5, WHITE, True)]],
+     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
 
-# 下段：だから製造業に効く（→次スライドで日本へ）
-rect(s, 0.85, 5.78, 11.63, 1.05, fill=REDWA, line=REDBD, line_w=1, radius=0.05)
-text(s, 1.15, 5.9, 11.0, 0.9,
-     [[R("では、これは", 15, INK, True),
-       R("日本", 15, RED, True), R("にどう効くのか？", 15, INK, True),
-       R("——実は、国内市場も“桁”が変わっている。", 15, INK, True)]],
+# =========================================================
+# SLIDE 4 — DC1棟の建設費は、誰に入るのか（ゼネコン vs 製造業）
+# =========================================================
+s = slide()
+header(s, "3", "データセンターは“建物”より“設備”。お金の3/4は製造業側へ。",
+       "DC建設費の中身：建設（ゼネコン）と、電気・機械設備（製造業）の比率")
+
+# 100%バー
+bx, by, bw, bh = 0.85, 1.95, 11.63, 1.25
+w_gen = bw * 0.25   # 建築（ゼネコン）
+w_ele = bw * 0.50   # 電気設備
+w_mec = bw * 0.25   # 機械（空調・冷却）
+rect(s, bx, by, w_gen, bh, fill=CHAR)
+rect(s, bx+w_gen, by, w_ele, bh, fill=RED)
+rect(s, bx+w_gen+w_ele, by, w_mec, bh, fill=RED2)
+# 白い区切り
+rect(s, bx+w_gen-0.012, by, 0.024, bh, fill=WHITE)
+rect(s, bx+w_gen+w_ele-0.012, by, 0.024, bh, fill=WHITE)
+# セグメント内ラベル
+text(s, bx, by, w_gen, bh, [[R("建築（躯体）", 11, WHITE, True)], [R("約25%", 20, WHITE, True)]],
+     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=1, line_spacing=1.0)
+text(s, bx+w_gen, by, w_ele, bh, [[R("電気設備", 11.5, WHITE, True)], [R("約50%", 22, WHITE, True)]],
+     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=1, line_spacing=1.0)
+text(s, bx+w_gen+w_ele, by, w_mec, bh, [[R("空調・機械ほか", 10.5, WHITE, True)], [R("約25%", 20, WHITE, True)]],
+     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=1, line_spacing=1.0)
+# 上部ブラケット
+rect(s, bx, by-0.34, w_gen, 0.26, fill=CHARWA, line=CHAR, line_w=1, radius=0.1)
+text(s, bx, by-0.34, w_gen, 0.26, [[R("建設（ゼネコン）", 10, CHAR, True, FONT_M)]],
+     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+rect(s, bx+w_gen, by-0.34, w_ele+w_mec, 0.26, fill=REDWA, line=RED, line_w=1, radius=0.1)
+text(s, bx+w_gen, by-0.34, w_ele+w_mec, 0.26,
+     [[R("設備＝製造業（電気・機械メーカー＋設備工事）  約75%", 10.5, RED, True, FONT_M)]],
+     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+
+# 参考：他用途との比較
+rect(s, 0.85, 3.55, 5.6, 1.35, fill=WHITE, line=LINE, line_w=1, radius=0.05)
+text(s, 1.1, 3.72, 5.2, 0.3, [[R("設備工事の比率は、用途で全く違う", 10.5, RED, True, FONT_M)]])
+bars = [("オフィス", 0.30), ("マンション", 0.25), ("データセンター", 0.75)]
+bxx, bww = 3.35, 2.85
+for i, (nm, r) in enumerate(bars):
+    yy = 4.02 + i * 0.28
+    hot = nm == "データセンター"
+    text(s, 1.1, yy-0.02, 2.15, 0.26, [[R(nm, 10, (RED if hot else BODY), hot)]], anchor=MSO_ANCHOR.MIDDLE)
+    rect(s, bxx, yy+0.02, bww, 0.18, fill=PANEL, radius=0.3)
+    rect(s, bxx, yy+0.02, bww*r, 0.18, fill=(RED if hot else MUTE), radius=0.3)
+    text(s, bxx+bww+0.06, yy-0.02, 0.7, 0.26, [[R(f"{int(r*100)}%", 10, (RED if hot else MUTE), hot, FONT_M)]], anchor=MSO_ANCHOR.MIDDLE)
+
+# パンチライン
+rect(s, 6.65, 3.55, 5.83, 1.35, fill=CHARWA, line=CHAR, line_w=1.2, radius=0.05)
+text(s, 6.9, 3.72, 5.4, 1.1,
+     [[R("建設業だけを見るのは、", 15.5, INK, True),
+       R("氷山の一角。", 15.5, RED, True)],
+      [R("お金の“3/4”は、電気・機械設備＝製造業の世界にある。", 12.5, BODY)]],
+     space_after=6, line_spacing=1.16)
+
+# 下段：金額の実感
+rect(s, 0.85, 5.15, 11.63, 1.0, fill=REDWA, line=REDBD, line_w=1, radius=0.05)
+text(s, 1.15, 5.15, 11.0, 1.0,
+     [[R("大型DC1棟＝数百億〜1,000億円級（IT機器は別）。", 14, INK, True),
+       R("その約3/4、1棟あたり数百億円が、製造業側の“設備”に向かう。", 14, RED, True)]],
+     anchor=MSO_ANCHOR.MIDDLE, line_spacing=1.2)
+text(s, 0.9, 6.3, 11.5, 0.4,
+     [[R("出典：日経xTECH（DC建設費は電気設備 約50%＋空調等 約25%＋建築 約25%）／建設費/MW：Cushman & Wakefield・Turner & Townsend。", 9, MUTE, False, FONT_M)]])
+
+# =========================================================
+# SLIDE 5 — 設備は“人が現場で動き続ける”（周辺市場の正体）
+# =========================================================
+s = slide()
+header(s, "4", "しかも設備は、作って終わりじゃない。据付・試運転・保守で人が動く。",
+       "周辺市場の正体：モノ売りではなく、“現場”がずっと続く")
+
+phases = [
+    ("①", "製造", "○ 工場のなか", False, "機器をつくる。ここはメーカーの工場の中。"),
+    ("②", "据付・施工", "● 現場ではじまる", True, "搬入・配線・配管・据付。ここから“現場”が始まる。"),
+    ("③", "試運転・調整", "● 現場でつづく", True, "コミッショニング。建設費の1〜3%が試運転に。"),
+    ("④", "アフター保守・運用", "● 現場でずっと", True, "引き渡し後も点検・更新が続く。建設は一度、保守は毎年。"),
+]
+py, ph = 1.6, 1.85
+pcol0 = 0.85
+pcw = (12.48 - pcol0) / 4
+for i, (no, nm, badge, onsite, desc) in enumerate(phases):
+    x = pcol0 + i * pcw
+    bxw = pcw - 0.14
+    col = RED if onsite else CHAR
+    rect(s, x, py, bxw, ph, fill=WHITE, line=(REDBD if onsite else CHAR),
+         line_w=1.2, radius=0.06)
+    rect(s, x, py, bxw, 0.10, fill=col)
+    text(s, x+0.2, py+0.24, bxw-0.4, 0.9,
+         [[R(no + "  " + nm, 14, INK, True)],
+          [R(badge, 9.5, (RED if onsite else MUTE), True, FONT_M)],
+          [R(desc, 10, BODY)]], space_after=5, line_spacing=1.16)
+    if i < 3:
+        text(s, x+bxw-0.02, py+0.5, 0.28, 0.6, [[R("→", 18, RED, True, FONT_M)]], align=PP_ALIGN.CENTER)
+
+# 4工程のうち3つが“現場”
+rect(s, 0.85, 3.62, 11.63, 0.5, fill=PANEL, line=LINE, line_w=1, radius=0.06)
+text(s, 1.1, 3.62, 11.2, 0.5,
+     [[R("4工程のうち ", 12, BODY),
+       R("3つが“現場”", 12, RED, True),
+       R("——製造業の設備ビジネスは、モノを売って終わりではなく、人が現場で動き続ける労働集約の世界。", 12, INK, True)]],
      anchor=MSO_ANCHOR.MIDDLE)
 
-# =========================================================
-# SLIDE 4 — 日本ではどうか（国内市場の規模）
-# =========================================================
-s = slide()
-header(s, "3", "世界のAIマネーは、実額で日本にも流れ込んでいる。", "② 日本ではどうか — 国内市場も、桁が変わった")
+# O&M市場の伸び
+rect(s, 0.85, 4.3, 5.6, 1.55, fill=WHITE, line=REDBD, line_w=1.2, radius=0.05)
+text(s, 1.1, 4.48, 5.2, 0.3, [[R("保守（O&M）は“毎年”積み上がる別市場", 10.5, RED, True, FONT_M)]])
+text(s, 1.1, 4.82, 5.2, 0.9,
+     [[R("$15.8B → $45.6B", 22, RED, True, FONT_M)],
+      [R("DC運用保守サービス市場（世界・2024→2033）。年率+11%で拡大。", 10, BODY)]],
+     space_after=4, line_spacing=1.15)
 
-jp = [
-    ("4〜4.8兆円", "米クラウド大手の対日DC投資（〜2030年）",
-     "AWS 約2.26兆円('27迄)・MS 約1.6兆円('29迄)・Oracle 約1.2兆円。合計で2030年までに300億ドル超（日経）。"),
-    ("2.7→5.6兆円", "国内DCサービス市場（2023→2030年）",
-     "IDC/JEITA見通し。DC“建設投資”だけでも2028年に年1兆円超へ拡大する見込み（IDC）。"),
-    ("約3兆＋5兆円", "半導体：TSMC熊本＋ラピダス",
-     "TSMC熊本 第1+2で約3兆円、ラピダス総投資 約5兆円。関連投資を含め国内は9兆円規模（日経）。"),
-]
-jw = 11.63 / 3
-for i, (v, lab, b) in enumerate(jp):
-    x = 0.85 + i * jw
-    rect(s, x+0.06, 1.55, jw-0.12, 2.4, fill=WHITE, line=REDBD, line_w=1.3, radius=0.05)
-    rect(s, x+0.06, 1.55, jw-0.12, 0.11, fill=RED)
-    text(s, x+0.30, 1.82, jw-0.56, 0.85, [[R(v, 33, RED, True)]], anchor=MSO_ANCHOR.MIDDLE)
-    text(s, x+0.30, 2.72, jw-0.58, 0.5, [[R(lab, 12, INK, True)]], line_spacing=1.1)
-    text(s, x+0.30, 3.22, jw-0.6, 0.7, [[R(b, 9.6, BODY)]], line_spacing=1.16)
+# パンチライン（＝ANDPADの主戦場）
+rect(s, 6.65, 4.3, 5.83, 1.55, fill=REDWA, line=REDBD, line_w=1.2, radius=0.05)
+text(s, 6.9, 4.5, 5.4, 1.2,
+     [[R("＝ 建設の“周辺”に、より大きく・より長く続く", 13.5, INK, True)],
+      [R("“人が動く現場”の市場", 15.5, RED, True), R("が広がっている。", 13.5, INK, True)],
+      [R("ここはANDPADの現場管理が、そのまま効く。", 12.5, BODY)]],
+     space_after=5, line_spacing=1.16)
 
-# 電力・送配電バンド（国内固有の物理制約）
-rect(s, 0.85, 4.25, 11.63, 1.25, fill=CHARWA, line=CHAR, line_w=1.2, radius=0.05)
-text(s, 1.15, 4.45, 11.0, 0.5,
-     [[R("そして電気が足りない：", 15.5, INK, True),
-       R("国内DC・半導体の新増設で、最大需要電力は10年で約13倍", 15.5, RED, True),
-       R("（56万→715万kW／OCCTO）。", 14, BODY, False)]])
-text(s, 1.15, 5.0, 11.0, 0.45,
-     [[R("→ 発電所・変電所・送配電網の増強も国内で同時進行（大阪の変電所群＋首都圏66kV網に1,500億円超）。", 12, BODY)]])
-
-# クロージング：国内の現場になる
-rect(s, 0.85, 5.72, 11.63, 1.1, fill=REDWA, line=REDBD, line_w=1, radius=0.05)
-text(s, 1.15, 5.72, 11.0, 1.1,
-     [[R("これらは全て、", 15, INK, True),
-       R("“国内での建設・据付・保守の現場”", 15, RED, True), R("になる。", 15, INK, True)],
-      [R("＝ 我々の営業対象が、海外の話ではなく、日本国内で今まさに立ち上がっている。", 13, BODY)]],
-     anchor=MSO_ANCHOR.MIDDLE, space_after=6, line_spacing=1.2)
+rect(s, 0.85, 6.02, 11.63, 0.78, fill=CHARWA, line=CHAR, line_w=1.2, radius=0.05)
+text(s, 1.15, 6.02, 11.0, 0.78,
+     [[R("これまで建設業だけを相手にしてきた。", 14.5, INK, True),
+       R("その周辺に、設備＋据付＋試運転＋保守という広大な市場がある。", 14.5, RED, True)]],
+     anchor=MSO_ANCHOR.MIDDLE, line_spacing=1.15)
 
 # =========================================================
-# SLIDE 5 — WHERE：その金が“どこ”に着地するか（バリューチェーン×企業数字）
+# SLIDE 6 — その現場は、日本のこの企業に立ち上がっている（バリューチェーン）
 # =========================================================
 s = slide()
-header(s, "4", "国内のAI投資は、製造業のこの現場に着地している。", "AI需要は、バリューチェーンのどこに効くのか")
+header(s, "5", "国内のAI投資は、製造業のこの現場に着地している。", "AI需要は、バリューチェーンのどこに効くのか（国内主要プレーヤー）")
 
 flow = [
     ("01", "発電・電源", "電気をつくる", "受注残 5兆円超", "三菱重工 ガスタービン"),
-    ("02", "送変電・電線", "電気を送る・変える", "生産能力2倍/予約数年先", "変圧器 各社・フジクラ"),
+    ("02", "送変電・電線", "電気を送る・変える", "生産能力2倍/予約数年先", "変圧器各社・フジクラ"),
     ("03", "DC建設・設備工事", "箱を建てる", "空調工事 受注 +25.5%", "ダイダン・高砂熱学ほか"),
     ("04", "冷却・電源保護", "冷やす・止めない", "北米DC冷却 約13倍", "ダイキン 230→3,000億円"),
     ("05", "半導体", "計算する頭脳", "設備投資 +66%", "キオクシア・東京ｴﾚｸﾄﾛﾝ"),
 ]
 fy, fh = 1.55, 0.86
-by, bh = 2.52, 2.5
+by, bh = 2.52, 2.28
 col0 = 1.95
 cw = (12.48 - col0) / 5
-# start cap
 rect(s, 0.85, fy, 0.98, fh, fill=CHAR, radius=0.09)
 text(s, 0.85, fy, 0.98, fh,
      [[R("起点", 8, RGBColor(0xD7,0xDB,0xE0), True, FONT_M, 1)],
@@ -278,87 +360,32 @@ for i, (no, nm, sb, sv, chips) in enumerate(flow):
          [[R(no, 8, RGBColor(0xFF,0xC9,0xCE), True, FONT_M, 1)],
           [R(nm, 11, WHITE, True)]],
          align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=0, line_spacing=1.0)
-    # body card
     bx = cx + 0.05; bw = cw - 0.10
     rect(s, bx, by, bw, bh, fill=WHITE, line=LINE, line_w=1, radius=0.05)
     pad = 0.13
-    text(s, bx+pad, by+0.14, bw-2*pad, 0.3, [[R(sb, 11.5, INK, True)]])
-    rect(s, bx+pad, by+0.62, bw-2*pad, 0.01, fill=REDBD)
-    text(s, bx+pad, by+0.74, bw-2*pad, 0.7, [[R(sv, 13.5, RED, True)]], line_spacing=1.04)
-    text(s, bx+pad, by+1.62, bw-2*pad, 0.24, [[R("代表企業", 7, MUTE, True, FONT_M)]])
-    text(s, bx+pad, by+1.84, bw-2*pad, 0.6, [[R(chips, 9.2, INK, True)]], line_spacing=1.16)
+    text(s, bx+pad, by+0.12, bw-2*pad, 0.3, [[R(sb, 11, INK, True)]])
+    rect(s, bx+pad, by+0.56, bw-2*pad, 0.01, fill=REDBD)
+    text(s, bx+pad, by+0.66, bw-2*pad, 0.66, [[R(sv, 12.5, RED, True)]], line_spacing=1.04)
+    text(s, bx+pad, by+1.5, bw-2*pad, 0.22, [[R("代表企業", 7, MUTE, True, FONT_M)]])
+    text(s, bx+pad, by+1.7, bw-2*pad, 0.55, [[R(chips, 8.8, INK, True)]], line_spacing=1.14)
 
-# support band
-rect(s, 0.85, 5.2, 11.63, 0.62, fill=REDWA, line=REDBD, line_w=1, radius=0.05)
-rect(s, 0.85, 5.2, 2.35, 0.62, fill=RED, radius=0.05)
-text(s, 0.95, 5.2, 2.2, 0.62,
-     [[R("さらに基盤層で", 8.5, RGBColor(0xFF,0xE2,0xE5), False)],
-      [R("部品・材料・ガス", 11, WHITE, True)]],
-     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, space_after=0, line_spacing=1.05)
-text(s, 3.4, 5.2, 8.9, 0.62,
-     [[R("村田（MLCC・AIサーバ1台に約3万個）／SMC・アドバンテスト・イビデン・日本酸素 …", 11, INK, True)]],
+# 2モデル凡例
+rect(s, 0.85, 5.0, 11.63, 0.62, fill=PANEL, line=LINE, line_w=1, radius=0.06)
+text(s, 1.1, 5.0, 11.2, 0.62,
+     [[R("我々の入り方：", 10.5, MUTE, True, FONT_M),
+       R(" A 発注者＝工場増設・自社DCを“建てる側”で管理", 11, CHAR, True),
+       R("　／　", 10.5, MUTE, False),
+       R("B 請負＝据付・試運転・保守を“納める側”で管理（本命）", 11, RED, True)]],
      anchor=MSO_ANCHOR.MIDDLE)
 
-# closing line
-rect(s, 0.85, 6.0, 11.63, 0.85, fill=CHARWA, line=CHAR, line_w=1.2, radius=0.05)
-text(s, 1.15, 6.0, 11.0, 0.85,
-     [[R("川上（発電）から川下（半導体）まで全段が同時に増収増益。", 14.5, INK, True),
-       R("＝ 攻めどころは1つではなく、チェーン全体にある。", 14.5, RED, True)]],
-     anchor=MSO_ANCHOR.MIDDLE)
+rect(s, 0.85, 5.8, 11.63, 1.0, fill=CHARWA, line=CHAR, line_w=1.2, radius=0.05)
+text(s, 1.15, 5.8, 11.0, 1.0,
+     [[R("川上（発電）から川下（半導体）まで全段が同時に増収増益。", 14.5, INK, True)],
+      [R("＝ 攻めどころは1つではなく、チェーン全体にある。狙える現場が、日本中に生まれている。", 13, RED, True)]],
+     anchor=MSO_ANCHOR.MIDDLE, space_after=5, line_spacing=1.16)
 
 # =========================================================
-# SLIDE 5 — WHAT VALUE：どの業界に、どんな価値を届けるか
-# =========================================================
-s = slide()
-header(s, "5", "建設で磨いた“現場管理”を、そのまま製造業のフィールドへ。", "我々は、どの業界に・どんな価値を提供するのか")
-
-# 2モデル
-my = 1.55
-rect(s, 0.85, my, 5.75, 1.35, fill=CHARWA, line=CHAR, line_w=1.2, radius=0.08)
-text(s, 1.08, my+0.18, 5.35, 1.0,
-     [[R("A  発注者として", 14, CHAR, True)],
-      [R("設備投資を“建てる側”のプロジェクト管理", 11.5, INK, True)],
-      [R("工場の新増設・生産ライン更新・自社DC/電源・冷却設備の導入", 10.5, BODY)]],
-     space_after=4, line_spacing=1.14)
-rect(s, 6.73, my, 5.75, 1.35, fill=REDWA, line=RED, line_w=1.2, radius=0.08)
-text(s, 6.96, my+0.18, 5.35, 1.0,
-     [[R("B  請負として", 14, RED, True)],
-      [R("据付・試運転・保守を“納める側”の現場管理", 11.5, INK, True)],
-      [R("発電機・変圧器・空調・液冷・UPS・半導体装置のフィールド現場（本命）", 10.5, BODY)]],
-     space_after=4, line_spacing=1.14)
-
-# どの業界（優先ターゲット）
-rect(s, 0.85, 3.15, 11.63, 1.35, fill=WHITE, line=LINE, line_w=1, radius=0.05)
-text(s, 1.1, 3.3, 11.2, 0.3, [[R("価値を届ける主要業界", 10.5, RED, True, FONT_M, 1),
-     R("　★＝最優先", 8.5, MUTE, False, FONT_M)]])
-tgts = [("重電（変圧器・発電機）", True), ("DC建設サブコン（電気・空調）", True),
-        ("産業冷却・液冷・UPS", True), ("半導体・製造装置", False)]
-tw = 11.63 / 4
-for i, (t, top) in enumerate(tgts):
-    x = 0.85 + i * tw
-    if i > 0:
-        rect(s, x, 3.7, 0.012, 0.65, fill=LINE)
-    lab = "★ 最優先" if top else "有望"
-    lcol = RED if top else CHAR
-    text(s, x+0.24, 3.66, tw-0.36, 0.7,
-         [[R(lab, 8.5, lcol, True, FONT_M)],
-          [R(t, 12, INK, True)]], space_after=3, line_spacing=1.12)
-
-# 相手の痛み → 我々の価値
-rect(s, 0.85, 4.72, 11.63, 1.0, fill=REDWA, line=REDBD, line_w=1, radius=0.05)
-text(s, 1.15, 4.72, 11.0, 1.0,
-     [[R("相手の痛み：", 14, RED, True),
-       R("案件は激増、でも人は増えない。紙・Excel・電話では、増えた据付／試運転／保守現場をさばけない。", 14, INK, True)]],
-     anchor=MSO_ANCHOR.MIDDLE, line_spacing=1.2)
-rect(s, 0.85, 5.9, 11.63, 0.92, fill=CHARWA, line=CHAR, line_w=1.2, radius=0.05)
-text(s, 1.15, 5.9, 11.0, 0.92,
-     [[R("提供価値：", 14, CHAR, True),
-       R("多拠点・多職種の現場を1つにつなぎ、進捗・図面・検査・写真・報告を可視化する。", 14, INK, True),
-       R("——建設で実証済みの我々の主戦力。", 14, RED, True)]],
-     anchor=MSO_ANCHOR.MIDDLE, line_spacing=1.2)
-
-# =========================================================
-# SLIDE 6 — クロージング（モチベーション）
+# SLIDE 7 — クロージング（モチベーション）
 # =========================================================
 s = slide()
 rect(s, 0, 0, SW.inches, SH.inches, fill=INK)
@@ -376,9 +403,9 @@ text(s, 0.83, 1.95, 11.8, 1.7,
      line_spacing=1.12)
 
 pts = [
-    ("追い風は本物", "受注残・設備投資計画・売上ガイダンスに裏打ちされた、数年続く構造需要。思惑ではない。"),
-    ("武器は完成済み", "建設で磨いた現場管理は、製造業の据付・保守フィールドに“そのまま効く”最強の武器。"),
-    ("市場は今まさに開いた", "川上から川下まで、狙える現場がチェーン全体に生まれている。先に動いた者が獲る。"),
+    ("市場は建設の3倍広い", "DC建設費の約3/4は電気・機械設備＝製造業。据付・試運転・保守まで現場が続く。"),
+    ("追い風は本物", "国家予算級のAIマネーが国内に流入。受注残・設備投資計画に裏打ちされた構造需要。"),
+    ("武器は完成済み", "建設で磨いた現場管理は、製造業の据付・保守フィールドに“そのまま効く”。"),
 ]
 py = 3.95
 pw = (11.63 - 0.6) / 3
@@ -387,12 +414,12 @@ for i, (h, b) in enumerate(pts):
     rect(s, x, py, pw, 1.65, fill=RGBColor(0x24,0x28,0x2E), line=RGBColor(0x3A,0x40,0x48), line_w=1, radius=0.06)
     rect(s, x, py, pw, 0.09, fill=RED)
     text(s, x+0.26, py+0.28, pw-0.52, 1.3,
-         [[R(h, 15, WHITE, True)],
-          [R(b, 10.8, RGBColor(0xC7,0xD0,0xDC))]], space_after=8, line_spacing=1.2)
+         [[R(h, 14.5, WHITE, True)],
+          [R(b, 10.5, RGBColor(0xC7,0xD0,0xDC))]], space_after=8, line_spacing=1.2)
 
 rect(s, 0.85, 5.98, 11.63, 0.86, fill=RED, radius=0.06)
 text(s, 0.85, 5.98, 11.63, 0.86,
-     [[R("増える現場を、100人でつかみにいこう。", 21, WHITE, True)]],
+     [[R("建設の“周辺”に広がる巨大市場を、100人でつかみにいこう。", 21, WHITE, True)]],
      align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
 
 out = Path(__file__).resolve().parent.parent / "output" / "andpad_soukai_ai_deck.pptx"
