@@ -477,17 +477,17 @@ text(s, LM-0.02, 3.45, 11.7, 0.5,
      [[R(f"AI需要の拡大で増収増益が見込める国内外 {TOTAL} 社を、17セグメント・バリューチェーン順に整理。",
          15, SUB)]])
 ly = 4.35
-text(s, LM, ly, 5, 0.28, [[R("確度（一次情報の裏付け）", 10.5, MUTE, True, FONT_M, 1)]])
+text(s, LM, ly, 5, 0.28, [[R("確度 ― 各行の左端に色帯で表示", 10.5, MUTE, True, FONT_M, 1)]])
 for i, (lab, desc) in enumerate([("高", "受注・投資計画など一次情報が明確"),
                                  ("中", "一次情報＋報道等の二次情報"),
                                  ("低", "二次情報が中心")]):
     yy = ly + 0.42 + i * 0.42
     box(s, LM, yy+0.03, 0.15, 0.15, conf_c(lab))
     text(s, LM+0.3, yy, 6.5, 0.3, [[R(lab, 11, INK, True), R("　"+desc, 11, SUB)]])
-text(s, 7.1, ly, 5, 0.28, [[R("社名右の表記", 10.5, MUTE, True, FONT_M, 1)]])
+text(s, 7.1, ly, 5, 0.28, [[R("社名の下の表記", 10.5, MUTE, True, FONT_M, 1)]])
 for i, (lab, desc) in enumerate([("6501 等", "証券コード（上場）"),
                                  ("非上場", "未上場・子会社等"),
-                                 ("米 GEV 等", "海外は国名を併記")]):
+                                 ("米 GEV 等", "海外は国名1字を併記")]):
     yy = ly + 0.42 + i * 0.42
     text(s, 7.1, yy, 1.5, 0.3, [[R(lab, 10.5, FAINT, True, FONT_M)]])
     text(s, 8.7, yy, 3.7, 0.3, [[R(desc, 11, SUB)]])
@@ -505,53 +505,82 @@ def appendix_header(s, page):
     hrule(s, LM, 0.96, CW, wt=1.2)
 
 
-# ---- 2カラム・フロー配置で全社を流し込む ----
-COL_GAP = 0.6
-COL_W = (CW - COL_GAP) / 2
-COL_X = [LM, LM + COL_W + COL_GAP]
-A_TOP, A_BOT, ROW_H, HDR_H = 1.18, 7.15, 0.25, 0.46
+# ---- 1社1行の表形式で全社を掲載（成長ドライバー付き） ----
+A_TOP, A_BOT = 1.14, 7.2
+X_NAME, W_NAME = LM + 0.22, 2.55
+X_DRV = LM + 3.0
+W_DRV = RM - X_DRV
+DRV_SIZE, DRV_CPL, DRV_MAX = 9.5, 62, 180
+ROW_HAIR = RGBColor(0xEA, 0xED, 0xF0)
+HDR_H = 0.52
 
-stream = []
+
+def trim(txt, n=DRV_MAX):
+    txt = " ".join((txt or "").split())
+    return txt if len(txt) <= n else txt[:n-1].rstrip("　、。 ") + "…"
+
+
+def drv_lines(txt):
+    return min(3, max(1, -(-len(txt) // DRV_CPL)))   # ceil(len/CPL), 1〜3行
+
+
+rows = []
 for seg in SEGMENTS:
     cos = BY_SEG.get(seg["segment_id"], [])
-    if cos:
-        stream.append(("seg", seg))
-        stream.extend(("co", c) for c in cos)
+    if not cos:
+        continue
+    rows.append({"t": "hdr", "seg": seg, "h": HDR_H})
+    for c in cos:
+        drv = trim(c.get("growth_driver"))
+        rows.append({"t": "co", "c": c, "seg": seg, "drv": drv,
+                     "h": drv_lines(drv) * 0.215 + 0.30})
 
-pages, cur, col, y = [], [], 0, A_TOP
-for kind, data in stream:
-    h = HDR_H if kind == "seg" else ROW_H
-    need = h + (2 * ROW_H if kind == "seg" else 0)   # ヘッダーの孤立を防ぐ
-    if y + need > A_BOT:
-        if col == 0:
-            col, y = 1, A_TOP
-        else:
-            pages.append(cur); cur, col, y = [], 0, A_TOP
-    cur.append((col, y, kind, data))
-    y += h
+# ページ分割：見出しの孤立を防ぎ、改ページで途切れたセグメントには継続見出しを付す
+pages, cur, y, cur_seg = [], [], A_TOP, None
+for i, r in enumerate(rows):
+    if r["t"] == "hdr":
+        cur_seg = r["seg"]
+    orphan = rows[i+1]["h"] if (r["t"] == "hdr" and i+1 < len(rows)) else 0
+    if cur and y + r["h"] + orphan > A_BOT:
+        pages.append(cur); cur, y = [], A_TOP
+        if r["t"] == "co" and cur_seg is not None:
+            cur.append((y, {"t": "hdr", "seg": cur_seg, "h": HDR_H, "cont": True}))
+            y += HDR_H
+    cur.append((y, r)); y += r["h"]
 if cur:
     pages.append(cur)
 
+
+def draw_hdr(s, y, r):
+    seg = r["seg"]
+    title = SEG_TITLE.get(seg["segment_id"], seg["segment_name"])
+    n = len(BY_SEG.get(seg["segment_id"], []))
+    cont = r.get("cont", False)
+    box(s, LM, y+0.12, 0.13, 0.26, G1 if cont else RED)
+    tail = "　{}社 ・ 優先度 {}{}".format(n, seg["priority"], "　（続き）" if cont else "")
+    text(s, LM+0.28, y+0.05, CW-0.28, 0.32,
+         [[R("{:02d}  ".format(int(seg["value_chain_order"])), 11, FAINT if cont else RED, True, FONT_M),
+           R(title, 12.5, SUB if cont else INK, True),
+           R(tail, 9, FAINT, True, FONT_M)]], line_spacing=1.0)
+    hrule(s, LM, y+0.48, CW, color=HAIR, wt=1.0)
+
+
 for pi, cmds in enumerate(pages):
     s = slide()
-    appendix_header(s, f"付録 {pi+1} / {len(pages)}")
-    for col, y, kind, data in cmds:
-        x = COL_X[col]
-        if kind == "seg":
-            box(s, x, y+0.07, 0.12, 0.25, RED)
-            title = SEG_TITLE.get(data["segment_id"], data["segment_name"])
-            n = len(BY_SEG.get(data["segment_id"], []))
-            text(s, x+0.24, y, COL_W-0.24, 0.34,
-                 [[R(f"{int(data['value_chain_order']):02d}  ", 10, RED, True, FONT_M),
-                   R(title, 11.5, INK, True),
-                   R(f"　{n}社", 9, FAINT, True, FONT_M)]], line_spacing=1.0)
-            hrule(s, x, y+0.4, COL_W, color=HAIR, wt=0.8)
+    appendix_header(s, "付録 {} / {}".format(pi+1, len(pages)))
+    for y, r in cmds:
+        if r["t"] == "hdr":
+            draw_hdr(s, y, r)
         else:
-            box(s, x, y+0.06, 0.1, 0.1, conf_c(data.get("confidence", "")))
-            text(s, x+0.22, y-0.02, COL_W-1.62, 0.26,
-                 [[R(short_name(data["company_name_ja"]), 10.5, SUB, True)]])
-            text(s, x+COL_W-1.35, y-0.02, 1.35, 0.26,
-                 [[R(ticker_label(data), 9, FAINT, True, FONT_M)]], align=PP_ALIGN.RIGHT)
+            c = r["c"]
+            box(s, LM, y+0.05, 0.055, r["h"]-0.14, conf_c(c.get("confidence", "")))
+            text(s, X_NAME, y+0.05, W_NAME, 0.26,
+                 [[R(short_name(c["company_name_ja"]), 10.5, INK, True)]])
+            text(s, X_NAME, y+0.31, W_NAME, 0.22,
+                 [[R(ticker_label(c), 8.5, FAINT, True, FONT_M)]])
+            text(s, X_DRV, y+0.05, W_DRV, r["h"]-0.06,
+                 [[R(r["drv"], DRV_SIZE, SUB)]], line_spacing=1.14)
+            hrule(s, LM, y+r["h"]-0.02, CW, color=ROW_HAIR, wt=0.6)
 
 out = Path(__file__).resolve().parent.parent / "output" / "andpad_soukai_ai_deck.pptx"
 prs.save(str(out))
