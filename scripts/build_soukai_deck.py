@@ -122,7 +122,7 @@ text(s, LM-0.02, 5.15, 11.7, 1.1,
      line_spacing=1.5)
 hrule(s, LM, 6.95, CW)
 text(s, LM-0.02, 7.06, 11.7, 0.3,
-     [[R("2026-07   /   AIインフラ・バリューチェーン調査（国内外154社・決算/IR一次情報）＋公開データ", 10.5, FAINT, False, FONT_M)]])
+     [[R("2026-07   /   AIインフラ・バリューチェーン調査（国内外174社・決算/IR一次情報）＋公開データ", 10.5, FAINT, False, FONT_M)]])
 
 # =========================================================
 # SLIDE 2 — メガトレンド → 設備 → 製造業がコア → AIにフォーカス
@@ -410,9 +410,22 @@ with open(DATA / "segments.csv", encoding="utf-8") as f:
     SEGMENTS = sorted(csv.DictReader(f), key=lambda r: int(r["value_chain_order"]))
 with open(DATA / "companies.csv", encoding="utf-8") as f:
     _COMPS = list(csv.DictReader(f))
+
+
+def _is_domestic(ct):
+    ct = (ct or "").strip()
+    for sep in "／/（(、 ":                 # "スイス／日本（…）" などの先頭国名で判定
+        p = ct.find(sep)
+        if p > 0:
+            ct = ct[:p]
+    return ct.strip() == "日本"
+
+
+# 付録は国内企業のみを掲載（海外はマスタに温存しつつデッキからは除外）
 BY_SEG = {}
 for _c in _COMPS:
-    BY_SEG.setdefault(_c["segment_id"], []).append(_c)
+    if _is_domestic(_c.get("country")):
+        BY_SEG.setdefault(_c["segment_id"], []).append(_c)
 TOTAL = sum(len(v) for v in BY_SEG.values())
 
 # 表示用の簡潔なセグメント名（本編バリューチェーンと対応）
@@ -471,10 +484,10 @@ s = slide()
 box(s, LM, 1.35, 0.15, 0.15, RED)
 text(s, 1.16, 1.27, 10, 0.3, [[R("APPENDIX", 13, RED, True, FONT_M, 2)]])
 text(s, LM-0.04, 1.95, 11.8, 1.0,
-     [[R("バリューチェーン別 ・ ", 34, INK, True), R("キー企業一覧", 34, RED, True)]])
+     [[R("バリューチェーン別 ・ ", 34, INK, True), R("国内キー企業一覧", 34, RED, True)]])
 box(s, LM, 3.15, 3.2, 0.05, RED)
 text(s, LM-0.02, 3.45, 11.7, 0.5,
-     [[R(f"AI需要の拡大で増収増益が見込める国内外 {TOTAL} 社を、17セグメント・バリューチェーン順に整理。",
+     [[R(f"AI需要の拡大で増収増益が見込める国内企業 {TOTAL} 社を、17セグメント・バリューチェーン順に整理。",
          15, SUB)]])
 ly = 4.35
 text(s, LM, ly, 5, 0.28, [[R("確度 ― 各行の左端に色帯で表示", 10.5, MUTE, True, FONT_M, 1)]])
@@ -486,8 +499,7 @@ for i, (lab, desc) in enumerate([("高", "受注・投資計画など一次情�
     text(s, LM+0.3, yy, 6.5, 0.3, [[R(lab, 11, INK, True), R("　"+desc, 11, SUB)]])
 text(s, 7.1, ly, 5, 0.28, [[R("社名の下の表記", 10.5, MUTE, True, FONT_M, 1)]])
 for i, (lab, desc) in enumerate([("6501 等", "証券コード（上場）"),
-                                 ("非上場", "未上場・子会社等"),
-                                 ("米 GEV 等", "海外は国名1字を併記")]):
+                                 ("非上場", "未上場・子会社等")]):
     yy = ly + 0.42 + i * 0.42
     text(s, 7.1, yy, 1.5, 0.3, [[R(lab, 10.5, FAINT, True, FONT_M)]])
     text(s, 8.7, yy, 3.7, 0.3, [[R(desc, 11, SUB)]])
