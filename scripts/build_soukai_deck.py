@@ -1,6 +1,8 @@
-"""ANDPAD 本部総会 向けプレゼン資料（5分・全7枚）を生成する。
+"""ANDPAD 本部総会 向けプレゼン資料（本編5分・7枚＋付録）を生成する。
 デザイン方針: 箱の多用を避けつつ、大きめの文字・詰めた余白・細い罫線・赤の縦
 アクセントで“メリハリのあるエディトリアル調”。赤はアクセントとデータ強調に限定。
+付録: data/companies.csv・segments.csv からバリューチェーン別キー企業一覧（全社）を
+自動生成し、本編の後ろに付ける。
 出力: output/andpad_soukai_ai_deck.pptx
 """
 from pptx import Presentation
@@ -10,6 +12,7 @@ from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.oxml.ns import qn
 from pathlib import Path
+import csv
 
 # ---- palette ----
 RED   = RGBColor(0xE6,0x00,0x12)
@@ -398,6 +401,159 @@ box(s, LM, 6.72, CW, 0.05, RED)
 text(s, LM-0.02, 6.9, 11.7, 0.5,
      [[R("建設の“周辺”に広がる巨大市場を、100人でつかみにいこう。", 21, INK, True)]])
 
+# =========================================================
+# APPENDIX — バリューチェーン別・キー企業一覧（全社網羅）
+# =========================================================
+DATA = Path(__file__).resolve().parent.parent / "data"
+
+with open(DATA / "segments.csv", encoding="utf-8") as f:
+    SEGMENTS = sorted(csv.DictReader(f), key=lambda r: int(r["value_chain_order"]))
+with open(DATA / "companies.csv", encoding="utf-8") as f:
+    _COMPS = list(csv.DictReader(f))
+BY_SEG = {}
+for _c in _COMPS:
+    BY_SEG.setdefault(_c["segment_id"], []).append(_c)
+TOTAL = sum(len(v) for v in BY_SEG.values())
+
+# 表示用の簡潔なセグメント名（本編バリューチェーンと対応）
+SEG_TITLE = {
+    "SEG001": "特別高圧・大型変圧器",       "SEG002": "発電機・タービン・非常用電源",
+    "SEG003": "送配電（開閉装置・遮断器）",  "SEG004": "DC建設ゼネコン",
+    "SEG005": "DC電気・空調サブコン",       "SEG006": "産業冷却・空調（液冷・チラー）",
+    "SEG007": "電線・ケーブル・光ファイバー", "SEG008": "半導体前工程（ファウンドリ/メモリ）",
+    "SEG009": "半導体後工程（パッケージング）", "SEG010": "半導体製造装置・部材",
+    "SEG011": "電力インフラ（発送電・系統増強）", "SEG012": "非常用発電機・UPS",
+    "SEG013": "防音・免震・セキュリティ",     "SEG014": "建設資材・特殊建材",
+    "SEG015": "半導体装置 部品・サブシステム", "SEG016": "電子部品・基板・産業ガス",
+    "SEG017": "DC構築SI・DC運営",
+}
+CONF_COLOR = {"高": RED, "中": G_DK, "低": FAINT}
+CC_SHORT = {"米国": "米", "アメリカ": "米", "台湾": "台", "韓国": "韓", "中国": "中",
+            "オランダ": "蘭", "ドイツ": "独", "スイス": "瑞", "フランス": "仏",
+            "英国": "英", "イギリス": "英", "アイルランド": "愛", "フィンランド": "芬",
+            "スウェーデン": "典", "デンマーク": "丁", "ノルウェー": "諾", "カナダ": "加",
+            "イタリア": "伊"}
+
+
+def conf_c(v):
+    return CONF_COLOR.get(v, FAINT)
+
+
+def short_name(nm):
+    for br in ("（", "("):
+        i = nm.find(br)
+        if i > 4:
+            return nm[:i].strip()
+    return nm
+
+
+def norm_country(ct):
+    ct = (ct or "").strip()
+    for sep in "／/（(、 ":            # "ドイツ／英国（…）" → "ドイツ"
+        p = ct.find(sep)
+        if p > 0:
+            ct = ct[:p]
+    return ct.strip()
+
+
+def ticker_label(c):
+    tk = (c.get("ticker") or "").strip()
+    if not tk:
+        return "非上場"
+    ct = norm_country(c.get("country"))
+    if ct and ct != "日本":
+        return f"{CC_SHORT.get(ct, ct[:1])} {tk}"
+    return tk
+
+
+# ---- 付録・扉 ----
+s = slide()
+box(s, LM, 1.35, 0.15, 0.15, RED)
+text(s, 1.16, 1.27, 10, 0.3, [[R("APPENDIX", 13, RED, True, FONT_M, 2)]])
+text(s, LM-0.04, 1.95, 11.8, 1.0,
+     [[R("バリューチェーン別 ・ ", 34, INK, True), R("キー企業一覧", 34, RED, True)]])
+box(s, LM, 3.15, 3.2, 0.05, RED)
+text(s, LM-0.02, 3.45, 11.7, 0.5,
+     [[R(f"AI需要の拡大で増収増益が見込める国内外 {TOTAL} 社を、17セグメント・バリューチェーン順に整理。",
+         15, SUB)]])
+ly = 4.35
+text(s, LM, ly, 5, 0.28, [[R("確度（一次情報の裏付け）", 10.5, MUTE, True, FONT_M, 1)]])
+for i, (lab, desc) in enumerate([("高", "受注・投資計画など一次情報が明確"),
+                                 ("中", "一次情報＋報道等の二次情報"),
+                                 ("低", "二次情報が中心")]):
+    yy = ly + 0.42 + i * 0.42
+    box(s, LM, yy+0.03, 0.15, 0.15, conf_c(lab))
+    text(s, LM+0.3, yy, 6.5, 0.3, [[R(lab, 11, INK, True), R("　"+desc, 11, SUB)]])
+text(s, 7.1, ly, 5, 0.28, [[R("社名右の表記", 10.5, MUTE, True, FONT_M, 1)]])
+for i, (lab, desc) in enumerate([("6501 等", "証券コード（上場）"),
+                                 ("非上場", "未上場・子会社等"),
+                                 ("米 GEV 等", "海外は国名を併記")]):
+    yy = ly + 0.42 + i * 0.42
+    text(s, 7.1, yy, 1.5, 0.3, [[R(lab, 10.5, FAINT, True, FONT_M)]])
+    text(s, 8.7, yy, 3.7, 0.3, [[R(desc, 11, SUB)]])
+box(s, LM, 6.7, CW, 0.03, HAIR)
+text(s, LM, 6.84, 11.7, 0.3,
+     [[R("出典：各社決算・IR等の一次情報＋公開データ。詳細は企業マスタ valuechain_master.xlsx ／ research/ を参照。",
+         9.5, FAINT, False, FONT_M)]])
+
+
+def appendix_header(s, page):
+    box(s, LM, 0.6, 0.14, 0.14, RED)
+    text(s, 1.14, 0.53, 9.5, 0.28,
+         [[R("APPENDIX ・ バリューチェーン別 キー企業一覧", 11.5, RED, True, FONT_M, 1.5)]])
+    text(s, RM-1.6, 0.53, 1.6, 0.28, [[R(page, 11.5, FAINT, True, FONT_M)]], align=PP_ALIGN.RIGHT)
+    hrule(s, LM, 0.96, CW, wt=1.2)
+
+
+# ---- 2カラム・フロー配置で全社を流し込む ----
+COL_GAP = 0.6
+COL_W = (CW - COL_GAP) / 2
+COL_X = [LM, LM + COL_W + COL_GAP]
+A_TOP, A_BOT, ROW_H, HDR_H = 1.18, 7.15, 0.25, 0.46
+
+stream = []
+for seg in SEGMENTS:
+    cos = BY_SEG.get(seg["segment_id"], [])
+    if cos:
+        stream.append(("seg", seg))
+        stream.extend(("co", c) for c in cos)
+
+pages, cur, col, y = [], [], 0, A_TOP
+for kind, data in stream:
+    h = HDR_H if kind == "seg" else ROW_H
+    need = h + (2 * ROW_H if kind == "seg" else 0)   # ヘッダーの孤立を防ぐ
+    if y + need > A_BOT:
+        if col == 0:
+            col, y = 1, A_TOP
+        else:
+            pages.append(cur); cur, col, y = [], 0, A_TOP
+    cur.append((col, y, kind, data))
+    y += h
+if cur:
+    pages.append(cur)
+
+for pi, cmds in enumerate(pages):
+    s = slide()
+    appendix_header(s, f"付録 {pi+1} / {len(pages)}")
+    for col, y, kind, data in cmds:
+        x = COL_X[col]
+        if kind == "seg":
+            box(s, x, y+0.07, 0.12, 0.25, RED)
+            title = SEG_TITLE.get(data["segment_id"], data["segment_name"])
+            n = len(BY_SEG.get(data["segment_id"], []))
+            text(s, x+0.24, y, COL_W-0.24, 0.34,
+                 [[R(f"{int(data['value_chain_order']):02d}  ", 10, RED, True, FONT_M),
+                   R(title, 11.5, INK, True),
+                   R(f"　{n}社", 9, FAINT, True, FONT_M)]], line_spacing=1.0)
+            hrule(s, x, y+0.4, COL_W, color=HAIR, wt=0.8)
+        else:
+            box(s, x, y+0.06, 0.1, 0.1, conf_c(data.get("confidence", "")))
+            text(s, x+0.22, y-0.02, COL_W-1.62, 0.26,
+                 [[R(short_name(data["company_name_ja"]), 10.5, SUB, True)]])
+            text(s, x+COL_W-1.35, y-0.02, 1.35, 0.26,
+                 [[R(ticker_label(data), 9, FAINT, True, FONT_M)]], align=PP_ALIGN.RIGHT)
+
 out = Path(__file__).resolve().parent.parent / "output" / "andpad_soukai_ai_deck.pptx"
 prs.save(str(out))
-print("saved:", out, "/ slides:", len(prs.slides._sldIdLst))
+print("saved:", out, "/ slides:", len(prs.slides._sldIdLst),
+      "/ appendix pages:", len(pages), "/ companies:", TOTAL)
